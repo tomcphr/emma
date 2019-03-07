@@ -1,0 +1,29 @@
+{
+  "name": "emma",
+  "version": "1.0.0",
+  "description": "A rouge like RPG",
+  "main": "index.js",
+  "scripts": {
+    "compile": "./node_modules/.bin/webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomcphr/emma.git"
+  },
+  "keywords": [
+    "rougelike"
+  ],
+  "author": "tomcphr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomcphr/emma/issues"
+  },
+  "homepage": "https://github.com/tomcphr/emma#readme",
+  "dependencies": {
+    "phaser": "^3.16.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-command": "^0.4.1"
+  }
+}
