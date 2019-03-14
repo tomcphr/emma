@@ -2,6 +2,7 @@ import World from "./scenes/World";
 
 window.onload = new Phaser.Game({
     type: Phaser.AUTO,
+    backgroundColor: "#000",
     physics: {
         default: "arcade",
         arcade: {
@@ -11,7 +12,7 @@ window.onload = new Phaser.Game({
     },
     scale: {
         parent: "gameContainer",
-        width: 960,
+        width: 800,
         height: 600,
         //mode: Phaser.Scale.FIT,
         //autoCenter: Phaser.Scale.CENTER_BOTH
