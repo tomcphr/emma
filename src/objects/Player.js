@@ -1,54 +1,29 @@
 export default class Player
 {
-    constructor (scene, layer, width, height) {
+    constructor(scene, world) {
         this.scene = scene;
-        this.width = width * layer.scaleX;
-        this.height = height * layer.scaleY;
+        this.world = world;
+
+        this.width = world.getTileMap().tileWidth * world.getBoundariesLayer().scaleX;
+        this.height = world.getTileMap().tileHeight * world.getBoundariesLayer().scaleY;
 
         this.graphics = scene.add.graphics({fillStyle: { color: 0xedca40, alpha: 1 }});
     };
 
-    draw () {
-        return this.graphics.fillRect(0, 0, this.width, this.height);
+    getWidth ()
+    {
+        return this.width;
     };
 
-    move (time, cursors) {
-        var repeatMoveDelay = 100;
+    getHeight ()
+    {
+        return this.height;
+    };
 
-        if (time > (this.lastMove + repeatMoveDelay)) {
-            if (cursors.down.isDown)
-            {
-                if (isTileOpenAt(this.x, this.y + this.height))
-                {
-                    this.y += this.height;
-                    this.lastMove = time;
-                }
-            }
-            else if (cursors.up.isDown)
-            {
-                if (isTileOpenAt(this.x, this.y - this.height))
-                {
-                    this.y -= this.height;
-                    this.lastMove = time;
-                }
-            }
-
-            if (cursors.left.isDown)
-            {
-                if (isTileOpenAt(this.x - this.width, this.y))
-                {
-                    this.x -= this.width;
-                    this.lastMove = time;
-                }
-            }
-            else if (cursors.right.isDown)
-            {
-                if (isTileOpenAt(this.x + this.width, this.y))
-                {
-                    this.x += this.width;
-                    this.lastMove = time;
-                }
-            }
-        }
+    draw() {
+        let graphics = this.graphics.fillRect(0, 0, this.width, this.height);
+        graphics.x = this.world.getFirstRoom().getSpawnX();
+        graphics.y = this.world.getFirstRoom().getSpawnY();
+        return graphics;
     };
 }

@@ -1,4 +1,4 @@
-import World from "./scenes/World";
+import GameScene from "./scenes/GameScene";
 
 window.onload = new Phaser.Game({
     type: Phaser.AUTO,
@@ -18,5 +18,5 @@ window.onload = new Phaser.Game({
         //autoCenter: Phaser.Scale.CENTER_BOTH
     },
     pixelArt: true,
-    scene: [World],
+    scene: [GameScene],
 });
