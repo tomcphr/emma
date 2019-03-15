@@ -1,29 +1,49 @@
-export default class Player
-{
-    constructor(scene, world) {
+export default class Player {
+    constructor(scene, x, y) {
         this.scene = scene;
-        this.world = world;
 
-        this.width = world.getTileMap().tileWidth * world.getBoundariesLayer().scaleX;
-        this.height = world.getTileMap().tileHeight * world.getBoundariesLayer().scaleY;
+        this.sprite = scene.physics.add
+            .sprite(x, y, "characters", 0)
+            .setSize(22, 33)
+            .setOffset(23, 27);
 
-        this.graphics = scene.add.graphics({fillStyle: { color: 0xedca40, alpha: 1 }});
+        this.keys = scene.input.keyboard.createCursorKeys();
     };
 
-    getWidth ()
-    {
-        return this.width;
+    freeze() {
+        this.sprite.body.moves = false;
     };
 
-    getHeight ()
-    {
-        return this.height;
+    update() {
+        const keys = this.keys;
+        const sprite = this.sprite;
+        const speed = 300;
+        const prevVelocity = sprite.body.velocity.clone();
+
+        // Stop any previous movement from the last frame
+        sprite.body.setVelocity(0);
+
+        // Horizontal movement
+        if (keys.left.isDown) {
+            sprite.body.setVelocityX(-speed);
+            sprite.setFlipX(true);
+        } else if (keys.right.isDown) {
+            sprite.body.setVelocityX(speed);
+            sprite.setFlipX(false);
+        }
+
+        // Vertical movement
+        if (keys.up.isDown) {
+            sprite.body.setVelocityY(-speed);
+        } else if (keys.down.isDown) {
+            sprite.body.setVelocityY(speed);
+        }
+
+        // Normalize and scale the velocity so that sprite can't move faster along a diagonal
+        sprite.body.velocity.normalize().scale(speed);
     };
 
-    draw() {
-        let graphics = this.graphics.fillRect(0, 0, this.width, this.height);
-        graphics.x = this.world.getFirstRoom().getSpawnX();
-        graphics.y = this.world.getFirstRoom().getSpawnY();
-        return graphics;
+    destroy() {
+        this.sprite.destroy();
     };
 }

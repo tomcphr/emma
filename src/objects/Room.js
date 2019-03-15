@@ -31,21 +31,21 @@ export default class Room
         // Fill the room (minus the walls) with mostly clean floor tiles (90% of the time), but
         // occasionally place a dirty tile (10% of the time).
         layer.weightedRandomize(x + 1, y + 1, width - 2, height - 2, [
-            { index: 1, weight: 9 }, // 9/10 times, use index 1
-            { index: [1], weight: 1 } // 1/10 times, randomly pick 1
+            { index: 2, weight: 9 }, // 9/10 times, use index 1
+            { index: [2], weight: 1 } // 1/10 times, randomly pick 1
         ]);
 
         // Place the room corners tiles
-        layer.putTileAt(0, left, top);
-        layer.putTileAt(0, right, top);
-        layer.putTileAt(0, right, bottom);
-        layer.putTileAt(0, left, bottom);
+        layer.putTileAt(1, left, top);
+        layer.putTileAt(1, right, top);
+        layer.putTileAt(1, right, bottom);
+        layer.putTileAt(1, left, bottom);
 
         // Place the non-corner wall tiles using fill with x, y, width, height parameters
-        layer.fill(0, left + 1, top, width - 2, 1); // Top
-        layer.fill(0, left + 1, bottom, width - 2, 1); // Bottom
-        layer.fill(0, left, top + 1, 1, height - 2); // Left
-        layer.fill(0, right, top + 1, 1, height - 2); // Right
+        layer.fill(1, left + 1, top, width - 2, 1); // Top
+        layer.fill(1, left + 1, bottom, width - 2, 1); // Bottom
+        layer.fill(1, left, top + 1, 1, height - 2); // Left
+        layer.fill(1, right, top + 1, 1, height - 2); // Right
 
         // Allow the users to walk through walls
         var doors = this.data.getDoorLocations();

@@ -1,5 +1,6 @@
 import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
+import Darkness from "./Darkness";
 
 export default class World
 {
@@ -16,37 +17,55 @@ export default class World
         });
 
         this.map = scene.make.tilemap({
-            tileWidth: 32,
-            tileHeight: 32,
+            tileWidth: 48,
+            tileHeight: 48,
             width: this.dungeon.width,
             height: this.dungeon.height
         });
 
-        const tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
+        const tileset = this.map.addTilesetImage("dungeon", null, 48, 48);
         this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
+
+        const darkLayer = this.map.createBlankDynamicLayer("darkness", tileset).fill(0);
+        this.darkness = new Darkness(this, darkLayer);
     };
 
     generate()
     {
+        var boundaries = this.getBoundariesLayer();
+
         // Fill the world with the blank tile.
-        this.boundaries.fill(0);
+        boundaries.fill(0);
 
         // Create all of the rooms
-        this.dungeon.rooms.forEach(data => {
-            let room = new Room(this.map, data);
-            room.generate(this.boundaries);
+        this.getDungeon().rooms.forEach(data => {
+            this.getRoomInstance(data).generate(boundaries);
         });
 
         // Hide all of the rooms
-        this.boundaries.forEachTile(function (tile) {
+        boundaries.forEachTile(function (tile) {
             tile.alpha = 0;
         });
     };
 
+    update (player)
+    {
+        var playerTileX = this.getBoundariesLayer().worldToTileX(player.sprite.x);
+        var playerTileY = this.getBoundariesLayer().worldToTileY(player.sprite.y);
+        var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);
+        this.getDarkness().setActiveRoom(playerRoom);
+    };
+
+    getRoomInstance(data)
+    {
+        return new Room(this.getTileMap(), data);
+    };
+
     getFirstRoom()
     {
-        return new Room(this.map, this.dungeon.rooms[0]);
-    }
+        let first = this.getDungeon().rooms[0];
+        return this.getRoomInstance(first);
+    };
 
     getDungeon()
     {
@@ -62,4 +81,9 @@ export default class World
     {
         return this.boundaries;
     };
+
+    getDarkness()
+    {
+        return this.darkness;
+    }
 }
