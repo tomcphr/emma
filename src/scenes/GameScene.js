@@ -26,7 +26,7 @@ export default class GameScene extends Phaser.Scene
         this.player = new Player(this, spawnX, spawnY);
 
         let boundaries = this.world.getBoundariesLayer();
-        boundaries.setCollisionByExclusion([1]);
+        boundaries.setCollisionByExclusion([2]);
         this.physics.add.collider(this.player.sprite, boundaries);
 
         const camera = this.cameras.main;

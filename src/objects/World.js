@@ -1,6 +1,6 @@
 import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
-import Darkness from "./Darkness";
+import Shadows from "./Shadows";
 
 export default class World
 {
@@ -11,8 +11,8 @@ export default class World
             height: 100,
             doorPadding: 2,
             rooms: {
-                width: {min: 7, max: 15, onlyOdd: true},
-                height: {min: 7, max: 15, onlyOdd: true}
+                width: {min: 7, max: 13, onlyOdd: true},
+                height: {min: 7, max: 13, onlyOdd: true}
             }
         });
 
@@ -24,10 +24,9 @@ export default class World
         });
 
         const tileset = this.map.addTilesetImage("dungeon", null, 48, 48);
-        this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
 
-        const darkLayer = this.map.createBlankDynamicLayer("darkness", tileset).fill(0);
-        this.darkness = new Darkness(this, darkLayer);
+        this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
+        this.shadows = new Shadows(this, tileset);
     };
 
     generate()
@@ -41,11 +40,6 @@ export default class World
         this.getDungeon().rooms.forEach(data => {
             this.getRoomInstance(data).generate(boundaries);
         });
-
-        // Hide all of the rooms
-        boundaries.forEachTile(function (tile) {
-            tile.alpha = 0;
-        });
     };
 
     update (player)
@@ -53,7 +47,7 @@ export default class World
         var playerTileX = this.getBoundariesLayer().worldToTileX(player.sprite.x);
         var playerTileY = this.getBoundariesLayer().worldToTileY(player.sprite.y);
         var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);
-        this.getDarkness().setActiveRoom(playerRoom);
+        this.getShadows().setActiveRoom(playerRoom);
     };
 
     getRoomInstance(data)
@@ -82,8 +76,8 @@ export default class World
         return this.boundaries;
     };
 
-    getDarkness()
+    getShadows()
     {
-        return this.darkness;
+        return this.shadows;
     }
 }

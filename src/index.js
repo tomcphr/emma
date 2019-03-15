@@ -14,8 +14,8 @@ window.onload = new Phaser.Game({
         parent: "gameContainer",
         width: 800,
         height: 600,
-        //mode: Phaser.Scale.FIT,
-        //autoCenter: Phaser.Scale.CENTER_BOTH
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
     },
     pixelArt: true,
     scene: [GameScene],

@@ -15,12 +15,12 @@ export default class Room
 
     getSpawnX()
     {
-        return this.map.tileToWorldX(this.data.x + 1);
+        return this.map.tileToWorldX(this.data.centerX);
     };
 
     getSpawnY()
     {
-        return this.map.tileToWorldY(this.data.y + 1);
+        return this.map.tileToWorldY(this.data.centerY);
     };
 
     generate(layer)
@@ -54,7 +54,7 @@ export default class Room
             let doorX = x + doors[i].x;
             let doorY = y + doors[i].y;
 
-            layer.putTileAt(1, doorX, doorY);
+            layer.putTileAt(2, doorX, doorY);
         }
     };
 };
