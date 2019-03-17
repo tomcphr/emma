@@ -26,20 +26,25 @@ export default class World
         const tileset = this.map.addTilesetImage("dungeon", null, 48, 48);
 
         this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
+        this.interactable = this.map.createBlankDynamicLayer("interactable", tileset);
         this.shadows = new Shadows(this, tileset);
     };
 
     generate()
     {
-        var boundaries = this.getBoundariesLayer();
-
         // Fill the world with the blank tile.
-        boundaries.fill(0);
+        this.getBoundariesLayer().fill(0);
 
         // Create all of the rooms
         this.getDungeon().rooms.forEach(data => {
-            this.getRoomInstance(data).generate(boundaries);
+            this.getRoomInstance(data).generate();
         });
+
+        // Decide what's in each room.
+        let rooms = this.dungeon.rooms.slice();
+        let startRoom = rooms.shift();
+        let endRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
+        let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
     };
 
     update (player)
@@ -52,7 +57,7 @@ export default class World
 
     getRoomInstance(data)
     {
-        return new Room(this.getTileMap(), data);
+        return new Room(this.getTileMap(), this.getBoundariesLayer(), data);
     };
 
     getFirstRoom()

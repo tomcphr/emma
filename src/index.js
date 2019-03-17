@@ -20,3 +20,7 @@ window.onload = new Phaser.Game({
     pixelArt: true,
     scene: [GameScene],
 });
+
+import Loot from "./objects/Loot";
+var loot = new Loot();
+console.log(loot.getItems());
