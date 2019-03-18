@@ -6,9 +6,11 @@ export default class World
 {
     constructor(scene)
     {
+        this.scene = scene;
+
         this.dungeon = new Dungeon({
-            width: 100,
-            height: 100,
+            width: 25,
+            height: 25,
             doorPadding: 2,
             rooms: {
                 width: {min: 7, max: 13, onlyOdd: true},
@@ -43,15 +45,38 @@ export default class World
         // Decide what's in each room.
         let rooms = this.dungeon.rooms.slice();
         let startRoom = rooms.shift();
-        let endRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
+
+        let endRoom = this.getRoomInstance(Phaser.Utils.Array.RemoveRandomElement(rooms));
+        endRoom.markExit(() =>  {
+            // Hold the player in place.
+            this.scene.player.freeze();
+
+            let camera = this.scene.cameras.main;
+            camera.fade(250, 0, 0, 0);
+            // Bug? player sprite not re-creating correctly.
+            camera.once("camerafadeoutcomplete", () =>  {
+                // Remove the player object
+                this.scene.player.destroy();
+
+                // Restart the scene.
+                this.scene.scene.restart();
+            });
+        });
+
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
+
     };
 
-    update (player)
+    update ()
     {
-        var playerTileX = this.getBoundariesLayer().worldToTileX(player.sprite.x);
-        var playerTileY = this.getBoundariesLayer().worldToTileY(player.sprite.y);
+        // Get the current position of the player in the scene.
+        var playerTileX = this.getBoundariesLayer().worldToTileX(this.scene.player.sprite.x);
+        var playerTileY = this.getBoundariesLayer().worldToTileY(this.scene.player.sprite.y);
+
+        // Find the room the player is currently in.
         var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);
+
+        // Set the current room as being active.
         this.getShadows().setActiveRoom(playerRoom);
     };
 

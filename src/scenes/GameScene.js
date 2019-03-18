@@ -37,6 +37,6 @@ export default class GameScene extends Phaser.Scene
     update() {
         this.player.update();
 
-        this.world.update(this.player);
+        this.world.update();
     };
 }
