@@ -70,8 +70,8 @@ export default class World
     update ()
     {
         // Get the current position of the player in the scene.
-        var playerTileX = this.getBoundariesLayer().worldToTileX(this.scene.player.sprite.x);
-        var playerTileY = this.getBoundariesLayer().worldToTileY(this.scene.player.sprite.y);
+        var playerTileX = this.getBoundariesLayer().worldToTileX(this.scene.player.x);
+        var playerTileY = this.getBoundariesLayer().worldToTileY(this.scene.player.y);
 
         // Find the room the player is currently in.
         var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);

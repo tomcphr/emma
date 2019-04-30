@@ -1,49 +1,34 @@
-export default class Player {
+import Character from "./Character";
+
+export default class Player extends Character {
     constructor(scene, x, y) {
-        this.scene = scene;
-
-        this.sprite = scene.physics.add
-            .sprite(x, y, "characters", 0)
-            .setSize(22, 33)
-            .setOffset(23, 27);
-
-        this.keys = scene.input.keyboard.createCursorKeys();
-    };
-
-    freeze() {
-        this.sprite.body.moves = false;
+        super(scene, "characters", x, y, "player");
     };
 
     update() {
-        const keys = this.keys;
-        const sprite = this.sprite;
-        const speed = 300;
-        const prevVelocity = sprite.body.velocity.clone();
+        let keys = this.keys;
+        let speed = this.getSpeed();
 
         // Stop any previous movement from the last frame
-        sprite.body.setVelocity(0);
+        this.body.setVelocity(0);
 
         // Horizontal movement
         if (keys.left.isDown) {
-            sprite.body.setVelocityX(-speed);
-            sprite.setFlipX(true);
+            this.body.setVelocityX(-speed);
+            this.setFlipX(true);
         } else if (keys.right.isDown) {
-            sprite.body.setVelocityX(speed);
-            sprite.setFlipX(false);
+            this.body.setVelocityX(speed);
+            this.setFlipX(false);
         }
 
         // Vertical movement
         if (keys.up.isDown) {
-            sprite.body.setVelocityY(-speed);
+            this.body.setVelocityY(-speed);
         } else if (keys.down.isDown) {
-            sprite.body.setVelocityY(speed);
+            this.body.setVelocityY(speed);
         }
 
         // Normalize and scale the velocity so that sprite can't move faster along a diagonal
-        sprite.body.velocity.normalize().scale(speed);
-    };
-
-    destroy() {
-        this.sprite.destroy();
+        this.body.velocity.normalize().scale(speed);
     };
 }
