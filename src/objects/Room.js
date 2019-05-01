@@ -65,7 +65,7 @@ export default class Room
         }
     };
 
-    markExit(callback)
+    exit(callback)
     {
         this.layer.putTileAt(3, this.data.centerX, this.data.centerY);
 

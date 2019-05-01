@@ -47,7 +47,7 @@ export default class World
         let startRoom = rooms.shift();
 
         let endRoom = this.getRoomInstance(Phaser.Utils.Array.RemoveRandomElement(rooms));
-        endRoom.markExit(() =>  {
+        endRoom.exit(() =>  {
             // Hold the player in place.
             this.scene.player.freeze();
 
