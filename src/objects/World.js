@@ -67,7 +67,6 @@ export default class World
         });
 
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
-
     };
 
     update ()

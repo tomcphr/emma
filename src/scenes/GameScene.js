@@ -1,6 +1,6 @@
 import Player from "../objects/Player";
 import World from "../objects/World";
-import Wanderer from "../objects/Npcs/Wanderer";
+import Wanderer from "../objects/npcs/Wanderer";
 
 export default class GameScene extends Phaser.Scene
 {
