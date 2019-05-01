@@ -52,8 +52,11 @@ export default class World
             this.scene.player.freeze();
 
             let camera = this.scene.cameras.main;
+
+            // Fade the camera to black
             camera.fade(250, 0, 0, 0);
-            // Bug? player sprite not re-creating correctly.
+
+            // When the camera has faded, restart the scene.
             camera.once("camerafadeoutcomplete", () =>  {
                 // Remove the player object
                 this.scene.player.destroy();

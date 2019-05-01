@@ -8,6 +8,13 @@ export default class Player extends Character {
     };
 
     update() {
+        // If we have a body, allow movement
+        if (this.body) {
+            this.move()
+        }
+    };
+
+    move() {
         let speed = this.getSpeed();
 
         // Stop any previous movement from the last frame
