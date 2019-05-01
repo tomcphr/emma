@@ -3,28 +3,29 @@ import Character from "./Character";
 export default class Player extends Character {
     constructor(scene, x, y) {
         super(scene, "characters", x, y, "player");
+
+        this.keys = scene.keys;
     };
 
     update() {
-        let keys = this.keys;
         let speed = this.getSpeed();
 
         // Stop any previous movement from the last frame
         this.body.setVelocity(0);
 
         // Horizontal movement
-        if (keys.left.isDown) {
+        if (this.keys.left.isDown) {
             this.body.setVelocityX(-speed);
             this.setFlipX(true);
-        } else if (keys.right.isDown) {
+        } else if (this.keys.right.isDown) {
             this.body.setVelocityX(speed);
             this.setFlipX(false);
         }
 
         // Vertical movement
-        if (keys.up.isDown) {
+        if (this.keys.up.isDown) {
             this.body.setVelocityY(-speed);
-        } else if (keys.down.isDown) {
+        } else if (this.keys.down.isDown) {
             this.body.setVelocityY(speed);
         }
 
