@@ -40,7 +40,7 @@ export default class GameScene extends Phaser.Scene
             });
         });
 
-        this.wanderer = new Wanderer(this, spawnX + 32, spawnY + 32, "player");
+        this.wanderer = new Wanderer(this, spawnX + 32, spawnY + 32);
 
         const camera = this.cameras.main;
         camera.startFollow(this.player);

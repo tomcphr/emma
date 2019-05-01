@@ -1,7 +1,6 @@
-import Character from "../Character";
-
-export default class Wanderer extends Character {
-    constructor(scene, x, y, id) {
+import Npc from "../Npc";
+export default class Wanderer extends Npc {
+    constructor(scene, x, y) {
         super(scene, "characters", x, y, "wanderer");
     };
 }
