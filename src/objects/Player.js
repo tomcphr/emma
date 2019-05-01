@@ -1,10 +1,11 @@
 import Character from "./Character";
-
 export default class Player extends Character {
     constructor(scene, x, y) {
         super(scene, "characters", x, y, "player");
 
         this.keys = scene.keys;
+
+        this.body.setImmovable(0);
     };
 
     update() {
