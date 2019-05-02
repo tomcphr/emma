@@ -1,5 +1,5 @@
 import Npc from "../Npc";
-import CooksAssistant from "./quests/CooksAssistant";
+import ChefsAssistant from "./quests/ChefsAssistant";
 export default class Wanderer extends Npc {
     constructor(scene, x, y) {
         super(scene, "characters", x, y, "wanderer");
@@ -7,7 +7,7 @@ export default class Wanderer extends Npc {
         this.scene = scene;
 
         this.quests = [
-            new CooksAssistant(this.scene),
+            new ChefsAssistant(this.scene),
         ];
     };
 
