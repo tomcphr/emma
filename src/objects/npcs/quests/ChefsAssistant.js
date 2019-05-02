@@ -1,5 +1,5 @@
 import FetchQuest from "./types/FetchQuest";
-export default class CooksAssistant {
+export default class ChefsAssistant {
     constructor(scene) {
         let items = {
             "milk" : 1,
@@ -7,6 +7,6 @@ export default class CooksAssistant {
             "flour" : 1
         };
 
-        super(scene, "Cook's Assistant", "Cake Maker 2000", items);
+        super(scene, "Chef's Assistant", "Cake Maker 2000", items);
     };
 }
