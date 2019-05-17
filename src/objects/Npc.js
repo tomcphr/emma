@@ -5,9 +5,9 @@ export default class Npc extends Character {
 
         this.body.setImmovable(1);
 
-        scene.npcs.add(this);
-
         this.id = id;
+
+        scene.npcs.add(this);
     };
 
     interact() {
