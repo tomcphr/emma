@@ -1,6 +1,6 @@
 export default class Inventory {
     constructor(scene) {
-        this.data = [];
+        this.data = {};
     };
 
     addItem(item, quantity) {
