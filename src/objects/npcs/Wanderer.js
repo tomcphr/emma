@@ -11,7 +11,18 @@ export default class Wanderer extends Npc {
         ];
     };
 
-    quests() {
+    getQuests() {
         return this.quests;
+    };
+
+    interact () {
+        console.log("I have these quests:");
+
+        var quests = this.getQuests();
+
+        for (var id in quests) {
+            var quest = quests[id];
+            console.log(id, " | ", quest.getTitle(), " | ", quest.getDescription(), " | ", quest.getStatus());
+        }
     };
 }

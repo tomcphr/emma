@@ -11,10 +11,6 @@ export default class Npc extends Character {
     };
 
     interact() {
-        switch (this.id) {
-            case "wanderer":
-                alert("Bit quiet.. eh?");
-                break;
-        }
+        alert("Nothing much to say");
     };
 }
