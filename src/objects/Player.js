@@ -3,6 +3,9 @@ export default class Player extends Character {
     constructor(scene, x, y) {
         super(scene, "characters", x, y, "player");
 
+        this.body.setSize(24, 40);
+        this.body.setOffset(22, 10);
+
         this.keys = scene.keys;
 
         this.body.setImmovable(0);

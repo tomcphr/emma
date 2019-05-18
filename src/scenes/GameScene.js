@@ -27,26 +27,29 @@ export default class GameScene extends Phaser.Scene
         this.boundaries = this.world.getBoundariesLayer();
         this.boundaries.setCollisionByExclusion([2]);
 
-        this.npcs = this.add.group();
-
         let spawnX = this.world.getFirstRoom().getSpawnX();
         let spawnY = this.world.getFirstRoom().getSpawnY();
 
         this.player = new Player(this, spawnX, spawnY);
 
+        this.npcs = this.add.group();
         this.wanderer = new Wanderer(this, spawnX + 32, spawnY + 32);
 
         const camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
 
-        // Collide the Npcs with the player.
-        this.physics.add.collider(this.player, this.npcs, (player, npc) => {
-            this.input.keyboard.off("keydown-SPACE");
-            this.input.keyboard.on("keydown-SPACE", () => {
-                npc.interact();
-            });
+        this.input.keyboard.on("keydown-SPACE", () => {
+            this.npcs.getChildren().forEach((npc) => {
+                let distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y).toFixed(2);
+                if (distance < 30) {
+                    npc.interact();
+                }
+            }, this);
         });
+
+        // Collide the Npcs with the player.
+        this.physics.add.collider(this.player, this.npcs);
     };
 
     update() {
