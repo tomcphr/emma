@@ -48,9 +48,8 @@ export default class GameScene extends Phaser.Scene
 
         // Collide the Npcs with the player.
         this.physics.add.collider(this.player, this.npcs);
-    };
 
-    keyboard() {
+        // Keyboard events
         let events = {
             "keydown-SPACE" : () => {
                 this.npcs.getChildren().forEach((npc) => {

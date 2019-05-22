@@ -26,20 +26,34 @@ export default class Player extends Character {
         // Stop any previous movement from the last frame
         this.body.setVelocity(0);
 
+        let leftPressed = this.keys.left.isDown;
+        let rightPressed = this.keys.right.isDown;
+        let upPressed = this.keys.up.isDown;
+        let downPressed = this.keys.down.isDown;
+
         // Horizontal movement
-        if (this.keys.left.isDown) {
+        if (leftPressed) {
             this.body.setVelocityX(-speed);
             this.setFlipX(true);
-        } else if (this.keys.right.isDown) {
+            this.anims.play("horizontal", true);
+        } else if (rightPressed) {
             this.body.setVelocityX(speed);
             this.setFlipX(false);
+            this.anims.play("horizontal", true);
         }
 
         // Vertical movement
-        if (this.keys.up.isDown) {
+        if (upPressed) {
             this.body.setVelocityY(-speed);
-        } else if (this.keys.down.isDown) {
+            this.anims.play("horizontal", true);
+        } else if (downPressed) {
             this.body.setVelocityY(speed);
+            this.anims.play("horizontal", true);
+        }
+
+        // If we are not pressing anything, then stop animations.
+        if (!leftPressed && !rightPressed && !upPressed && !downPressed) {
+            this.anims.pause(this.anims.currentAnim.frames[0]);
         }
 
         // Normalize and scale the velocity so that sprite can't move faster along a diagonal
