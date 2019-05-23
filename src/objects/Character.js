@@ -6,7 +6,9 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
         scene.physics.add.collider(this, scene.boundaries);
 
-        this.speed = 300;
+        this.speed = 150;
+
+        this.setScale(0.5);
     };
 
     getSpeed() {

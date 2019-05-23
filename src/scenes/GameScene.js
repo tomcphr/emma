@@ -32,19 +32,20 @@ export default class GameScene extends Phaser.Scene
         this.world.getFirstRoom().setAlpha(1);
 
         this.boundaries = this.world.getBoundariesLayer();
-        this.boundaries.setCollisionByExclusion([2]);
+        this.boundaries.setCollisionByExclusion([1, 2, 4, 5, 6, 8]);
 
         let spawnX = this.world.getFirstRoom().getSpawnX();
         let spawnY = this.world.getFirstRoom().getSpawnY();
 
         this.npcs = this.add.group();
-        this.wanderer = new Wanderer(this, spawnX + 32, spawnY + 32);
+        this.wanderer = new Wanderer(this, spawnX, spawnY);
 
-        this.player = new Player(this, spawnX, spawnY);
+        this.player = new Player(this, spawnX, spawnY + 32);
 
         const camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
+        camera.setZoom(2);
 
         // Collide the Npcs with the player.
         this.physics.add.collider(this.player, this.npcs);

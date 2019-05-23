@@ -19,13 +19,13 @@ export default class World
         });
 
         this.map = scene.make.tilemap({
-            tileWidth: 48,
-            tileHeight: 48,
+            tileWidth: 32,
+            tileHeight: 32,
             width: this.dungeon.width,
             height: this.dungeon.height
         });
 
-        const tileset = this.map.addTilesetImage("dungeon", null, 48, 48);
+        const tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
 
         this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
         this.interactable = this.map.createBlankDynamicLayer("interactable", tileset);
@@ -35,7 +35,7 @@ export default class World
     generate()
     {
         // Fill the world with the blank tile.
-        this.getBoundariesLayer().fill(0);
+        this.getBoundariesLayer().fill(9);
 
         // Create all of the rooms
         this.getDungeon().rooms.forEach(data => {
