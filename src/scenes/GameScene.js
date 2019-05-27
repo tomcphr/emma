@@ -5,7 +5,7 @@ import Wanderer from "../objects/npcs/Wanderer";
 export default class GameScene extends Phaser.Scene
 {
     constructor() {
-        super();
+        super({key: "GameScene", active: true});
     };
 
     preload() {
@@ -41,9 +41,6 @@ export default class GameScene extends Phaser.Scene
         this.world.generate();
         this.world.getFirstRoom().setAlpha(1);
 
-        this.boundaries = this.world.getBoundariesLayer();
-        this.boundaries.setCollisionByExclusion([1, 2, 4, 5, 6, 8]);
-
         let spawnX = this.world.getFirstRoom().getSpawnX();
         let spawnY = this.world.getFirstRoom().getSpawnY();
 
@@ -74,7 +71,6 @@ export default class GameScene extends Phaser.Scene
 
     update() {
         this.player.update();
-
         this.world.update();
     };
 }

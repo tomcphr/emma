@@ -1,5 +1,5 @@
 import GameScene from "./scenes/GameScene";
-
+import UiScene from "./scenes/UiScene";
 window.onload = new Phaser.Game({
     type: Phaser.AUTO,
     backgroundColor: "#000",
@@ -18,5 +18,5 @@ window.onload = new Phaser.Game({
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     pixelArt: true,
-    scene: [GameScene],
+    scene: [GameScene, UiScene],
 });
