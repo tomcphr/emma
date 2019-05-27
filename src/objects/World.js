@@ -26,13 +26,15 @@ export default class World
             height: this.dungeon.height
         });
 
-        const tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
+        this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
 
         this.npcs = scene.add.group();
     };
 
     generate()
     {
+        this.boundaries = this.map.createBlankDynamicLayer("boundaries", this.tileset);
+
         // Fill the world with the blank tile.
         this.getBoundariesLayer().fill(9);
 
@@ -45,8 +47,11 @@ export default class World
         let rooms = this.dungeon.rooms.slice();
         let startRoom = rooms.shift();
 
+        // Remove the endroom from the array and populate the exit.
         let endRoom = this.getRoomInstance(Phaser.Utils.Array.RemoveRandomElement(rooms));
         endRoom.exit(() =>  {
+            this.scene.events.emit("downWeGo");
+
             // Hold the player in place.
             this.scene.player.freeze();
             this.npcs.getChildren().forEach((npc) => {
@@ -71,6 +76,7 @@ export default class World
             });
         });
 
+        // Loop around the remaining rooms and randomize
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
         otherRooms.forEach(data => {
             var rand = Math.random();
@@ -84,6 +90,10 @@ export default class World
             }
         });
 
+        this.getBoundariesLayer().setCollisionByExclusion([1, 2, 4, 5, 6, 8]);
+
+        this.shadows = new Shadows(this, this.tileset);
+        this.shadows.cloak(true);
     };
 
     update ()

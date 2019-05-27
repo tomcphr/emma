@@ -1,9 +1,14 @@
 export default class Shadows {
     constructor(scene, tileset) {
         this.layer = scene.map.createBlankDynamicLayer("shadows", tileset);
-        this.layer.fill(9);
 
         this.activeRoom = null;
+    };
+
+    cloak(action = true) {
+        if (action) {
+            this.layer.fill(9);
+        }
     };
 
     setActiveRoom(room) {
