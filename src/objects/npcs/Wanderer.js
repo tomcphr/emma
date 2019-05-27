@@ -9,6 +9,10 @@ export default class Wanderer extends Npc {
         this.quests = [
             new ChefsAssistant(this.scene),
         ];
+
+        this.setScale(0.5);
+        this.body.setSize(30, 30);
+        this.body.setOffset(18, 11);
     };
 
     getQuests() {

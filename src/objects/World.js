@@ -1,6 +1,7 @@
 import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
 import Shadows from "./Shadows";
+import Imp from "../objects/npcs/Imp";
 
 export default class World
 {
@@ -27,9 +28,7 @@ export default class World
 
         const tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
 
-        this.boundaries = this.map.createBlankDynamicLayer("boundaries", tileset);
-        this.interactable = this.map.createBlankDynamicLayer("interactable", tileset);
-        this.shadows = new Shadows(this, tileset);
+        this.npcs = scene.add.group();
     };
 
     generate()
@@ -50,6 +49,9 @@ export default class World
         endRoom.exit(() =>  {
             // Hold the player in place.
             this.scene.player.freeze();
+            this.npcs.getChildren().forEach((npc) => {
+                npc.freeze();
+            });
 
             let camera = this.scene.cameras.main;
 
@@ -61,12 +63,27 @@ export default class World
                 // Remove the player object
                 this.scene.player.destroy();
 
+                // Remove all Npcs
+                this.npcs.clear(true, true);
+
                 // Restart the scene.
                 this.scene.scene.restart();
             });
         });
 
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
+        otherRooms.forEach(data => {
+            var rand = Math.random();
+
+            // 25% of 1 imp
+            if (rand <= 0.25) {
+                var worldX = this.map.tileToWorldX(data.centerX);
+                var worldY = this.map.tileToWorldY(data.centerY);
+
+                (new Imp(this.scene, worldX, worldY));
+            }
+        });
+
     };
 
     update ()
@@ -80,6 +97,10 @@ export default class World
 
         // Set the current room as being active.
         this.getShadows().setActiveRoom(playerRoom);
+
+        this.npcs.getChildren().forEach((npc) => {
+            npc.update();
+        });
     };
 
     getRoomInstance(data)
@@ -105,6 +126,9 @@ export default class World
 
     getBoundariesLayer()
     {
+        if (!this.boundaries) {
+            this.generate();
+        }
         return this.boundaries;
     };
 
