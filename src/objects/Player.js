@@ -3,14 +3,15 @@ export default class Player extends Character {
     constructor(scene, x, y) {
         super(scene, "characters", x, y, "player");
 
+        this.body.setImmovable(0);
         this.body.setSize(30, 44);
         this.body.setOffset(18, 11);
 
         this.keys = scene.keys;
 
-        this.body.setImmovable(0);
+        this.anims.load("player-horizontal");
 
-        this.anims.load("horizontal");
+        this.setScale(0.5);
     };
 
     update() {
@@ -35,25 +36,23 @@ export default class Player extends Character {
         if (leftPressed) {
             this.body.setVelocityX(-speed);
             this.setFlipX(true);
-            this.anims.play("horizontal", true);
         } else if (rightPressed) {
             this.body.setVelocityX(speed);
             this.setFlipX(false);
-            this.anims.play("horizontal", true);
         }
 
         // Vertical movement
         if (upPressed) {
             this.body.setVelocityY(-speed);
-            this.anims.play("horizontal", true);
         } else if (downPressed) {
             this.body.setVelocityY(speed);
-            this.anims.play("horizontal", true);
         }
 
         // If we are not pressing anything, then stop animations.
         if (!leftPressed && !rightPressed && !upPressed && !downPressed) {
             this.anims.pause(this.anims.currentAnim.frames[0]);
+        } else {
+            this.anims.play("player-horizontal", true);
         }
 
         // Normalize and scale the velocity so that sprite can't move faster along a diagonal

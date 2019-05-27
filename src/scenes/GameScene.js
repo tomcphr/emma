@@ -15,12 +15,22 @@ export default class GameScene extends Phaser.Scene
             frameWidth: 64,
             frameHeight: 64
         });
+        this.load.spritesheet("imp", assets + "/spritesheets/imp.png", {
+            frameWidth: 32,
+            frameHeight: 32
+        });
     };
 
     create() {
         this.anims.create({
-            key: "horizontal",
+            key: "player-horizontal",
             frames: this.anims.generateFrameNumbers("characters", { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "imp-horizontal",
+            frames: this.anims.generateFrameNumbers("imp", { start: 8, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
@@ -37,7 +47,6 @@ export default class GameScene extends Phaser.Scene
         let spawnX = this.world.getFirstRoom().getSpawnX();
         let spawnY = this.world.getFirstRoom().getSpawnY();
 
-        this.npcs = this.add.group();
         this.wanderer = new Wanderer(this, spawnX, spawnY);
 
         this.player = new Player(this, spawnX, spawnY + 32);
@@ -47,13 +56,10 @@ export default class GameScene extends Phaser.Scene
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
         camera.setZoom(2);
 
-        // Collide the Npcs with the player.
-        this.physics.add.collider(this.player, this.npcs);
-
         // Keyboard events
         let events = {
             "keydown-SPACE" : () => {
-                this.npcs.getChildren().forEach((npc) => {
+                this.world.npcs.getChildren().forEach((npc) => {
                     let distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y).toFixed(2);
                     if (distance < 40) {
                         npc.interact();
