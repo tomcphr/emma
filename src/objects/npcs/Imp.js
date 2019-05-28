@@ -17,8 +17,8 @@ export default class Imp extends Npc {
 
     update () {
         if (this.body) {
-            let distance = Phaser.Math.Distance.Between(this.scene.player.x, this.scene.player.y, this.x, this.y).toFixed(2);
-            if (distance < 100 && distance > 28) {
+            let distance = this.getDistance();
+            if (distance < 100 && distance > 30) {
                 this.move();
             } else {
                 this.freeze();
