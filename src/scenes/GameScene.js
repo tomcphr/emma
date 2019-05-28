@@ -57,7 +57,7 @@ export default class GameScene extends Phaser.Scene
         let events = {
             "keydown-SPACE" : () => {
                 this.world.npcs.getChildren().forEach((npc) => {
-                    let distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y).toFixed(2);
+                    let distance = npc.getDistance();
                     if (distance < 40) {
                         npc.interact();
                     }
