@@ -14,7 +14,7 @@ export default class UiScene extends Phaser.Scene
         depthText.setScrollFactor(0);
 
         //  Grab a reference to the Game Scene
-        let gameScene = this.scene.get('GameScene');
+        let gameScene = this.scene.get("GameScene");
 
         //  Listen for events from it
         gameScene.events.on("downWeGo", function () {
