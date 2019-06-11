@@ -17,10 +17,12 @@ export default class Imp extends Npc {
 
     update () {
         if (this.body) {
+            // If the player is nearby then move towards them.
             let distance = this.getDistance();
             if (distance < 100 && distance > 30) {
                 this.move();
             } else {
+                // Otherwise; we want to patrol.
                 this.freeze();
             }
         }
