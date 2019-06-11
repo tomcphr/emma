@@ -20,13 +20,18 @@ export default class Wanderer extends Npc {
     };
 
     interact () {
-        console.log("I have these quests:");
-
         var quests = this.getQuests();
 
+        let text = [
+            "Traveller,",
+            "I have these quests:",
+        ];
         for (var id in quests) {
             var quest = quests[id];
-            console.log(id, " | ", quest.getTitle(), " | ", quest.getDescription(), " | ", quest.getStatus());
+
+            text.push("- " + quest.getTitle());
         }
+
+        this.scene.events.emit("dialogText", text);
     };
 }
