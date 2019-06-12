@@ -11,7 +11,7 @@ export default class Dialog
         ];
         for (let i in this.dialog) {
             let sprite = this.dialog[i];
-            sprite.setOrigin(0,0);
+            sprite.setOrigin(0, 0);
             sprite.setScrollFactor(0);
             sprite.setAlpha(0);
         }
@@ -19,7 +19,7 @@ export default class Dialog
         this.text = [];
     }
 
-    show(text)
+    show(text, page = 0)
     {
         this.destroy();
         for (let i in this.dialog) {
@@ -27,14 +27,17 @@ export default class Dialog
             sprite.setAlpha(1);
         }
 
+        if ((page + 1) > text.length) {
+            return;
+        }
+
         let y = 460;
-        // Only show the first paragraph for now.
-        for (var i = 0; i < text[0].length; i++) {
-            let dialogText = this.scene.add.text(35, y, text[i], {fontSize: "16px", fill: "#000"});
+        for (var i = 0; i < text[page].length; i++) {
+            let dialogText = this.scene.add.text(35, y, text[page][i], {fontSize: "16px", fill: "#000"});
             dialogText.setScrollFactor(0);
             dialogText.setText(text[i]);
             this.text.push(dialogText);
-            y = y + 20;
+            y = y + 35;
         }
     }
 

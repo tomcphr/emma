@@ -13,27 +13,40 @@ export default class Wanderer extends Npc {
         this.setScale(0.5);
         this.body.setSize(30, 30);
         this.body.setOffset(18, 11);
+
+        this.talking = false;
     };
 
     getQuests() {
         return this.quests;
     };
 
-    interact () {
-        var quests = this.getQuests();
-
-        let text = [
-            [
-                "Traveller,",
-                "I have these quests:"
-            ]
-        ];
-        for (var id in quests) {
-            var quest = quests[id];
-
-            text.push("- " + quest.getTitle());
+    interact() {
+        if (this.getDistance() > 40) {
+            return;
         }
 
-        this.scene.getDialog().show(text);
+        this.talking = true;
+
+        var quests = this.getQuests();
+
+        let questsText = [
+            "Traveller,",
+            "I have these quests:"
+        ];
+        for (var id in quests) {
+            questsText.push("- " + quests[id].getTitle());
+        }
+
+        this.scene.getDialog().show([questsText]);
+    };
+
+    update() {
+        if (this.getDistance() > (this.height / 2)) {
+            if (this.talking) {
+                this.scene.getDialog().destroy();
+                this.talking = false;
+            }
+        }
     };
 }
