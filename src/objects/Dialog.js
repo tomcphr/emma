@@ -5,9 +5,7 @@ export default class Dialog
         this.scene = scene;
 
         this.dialog = [
-            this.scene.add.rectangle(25, 450, 250, 125, "0x808080"),
-            this.scene.add.rectangle(30, 455, 240, 115, "0xffffff"),
-            this.scene.add.rectangle(30, 555, 240, 15, "0x808080")
+            this.scene.add.rectangle(25, 450, 250, 125, "0x808080")
         ];
         for (let i in this.dialog) {
             let sprite = this.dialog[i];
@@ -15,8 +13,7 @@ export default class Dialog
             sprite.setScrollFactor(0);
             sprite.setAlpha(0);
         }
-
-        this.text = [];
+        this.text = null;
     }
 
     show(text, page = 0)
@@ -32,13 +29,25 @@ export default class Dialog
         }
 
         let y = 460;
-        for (var i = 0; i < text[page].length; i++) {
-            let dialogText = this.scene.add.text(35, y, text[page][i], {fontSize: "16px", fill: "#000"});
-            dialogText.setScrollFactor(0);
-            dialogText.setText(text[i]);
-            this.text.push(dialogText);
-            y = y + 35;
-        }
+        let dialogText = this.scene.add.text(35, y, text[page], {
+            backgroundColor: "#FFF",
+            fontSize: "16px",
+            fill: "#000",
+            wordWrap: {
+                width: 240
+            },
+            padding: {
+                left: 5,
+                right: 5,
+                top: 10,
+                bottom: 10
+            },
+            fixedWidth: 260,
+            maxLines: 5,
+            lineSpacing: 2
+        });
+        dialogText.setScrollFactor(0);
+        this.text = dialogText;
     }
 
     destroy()
@@ -48,9 +57,8 @@ export default class Dialog
             sprite.setAlpha(0);
         }
 
-        for (let i in this.text) {
-            let text = this.text[i];
-            text.destroy();
+        if (this.text) {
+            this.text.destroy();
         }
     }
 }
