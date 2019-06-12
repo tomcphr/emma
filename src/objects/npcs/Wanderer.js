@@ -23,8 +23,10 @@ export default class Wanderer extends Npc {
         var quests = this.getQuests();
 
         let text = [
-            "Traveller,",
-            "I have these quests:",
+            [
+                "Traveller,",
+                "I have these quests:"
+            ]
         ];
         for (var id in quests) {
             var quest = quests[id];
@@ -32,6 +34,6 @@ export default class Wanderer extends Npc {
             text.push("- " + quest.getTitle());
         }
 
-        this.scene.events.emit("dialogText", text);
+        this.scene.getDialog().show(text);
     };
 }

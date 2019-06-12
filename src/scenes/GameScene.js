@@ -73,4 +73,8 @@ export default class GameScene extends Phaser.Scene
         this.player.update();
         this.world.update();
     };
+
+    getDialog() {
+        return this.scene.get("UiScene").getDialog();
+    }
 }
