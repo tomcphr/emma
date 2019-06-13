@@ -26,7 +26,7 @@ export default class World
             height: this.dungeon.height
         });
 
-        this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
+        this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32, 1, 2);
 
         this.npcs = scene.add.group();
     };

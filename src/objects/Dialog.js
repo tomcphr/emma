@@ -4,15 +4,6 @@ export default class Dialog
     {
         this.scene = scene;
 
-        this.dialog = [
-            this.scene.add.rectangle(25, 450, 250, 125, "0x808080")
-        ];
-        for (let i in this.dialog) {
-            let sprite = this.dialog[i];
-            sprite.setOrigin(0, 0);
-            sprite.setScrollFactor(0);
-            sprite.setAlpha(0);
-        }
         this.text = null;
     }
 
@@ -34,7 +25,7 @@ export default class Dialog
             fontSize: "16px",
             fill: "#000",
             wordWrap: {
-                width: 240
+                width: 260
             },
             padding: {
                 left: 5,
@@ -42,7 +33,7 @@ export default class Dialog
                 top: 10,
                 bottom: 10
             },
-            fixedWidth: 260,
+            fixedWidth: 270,
             maxLines: 5,
             lineSpacing: 2
         });
@@ -52,11 +43,6 @@ export default class Dialog
 
     destroy()
     {
-        for (let i in this.dialog) {
-            let sprite = this.dialog[i];
-            sprite.setAlpha(0);
-        }
-
         if (this.text) {
             this.text.destroy();
         }
