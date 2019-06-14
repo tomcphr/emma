@@ -51,7 +51,7 @@ export default class GameScene extends Phaser.Scene
         const camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
-        camera.setZoom(2);
+        camera.setZoom(3);
 
         // Keyboard events
         let events = {

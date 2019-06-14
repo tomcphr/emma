@@ -1,14 +1,12 @@
 export default class Dialog
 {
-    constructor(scene)
-    {
+    constructor(scene) {
         this.scene = scene;
 
         this.text = null;
     }
 
-    show(text, page = 0)
-    {
+    show(text, page = 0) {
         this.destroy();
         for (let i in this.dialog) {
             let sprite = this.dialog[i];
@@ -19,21 +17,21 @@ export default class Dialog
             return;
         }
 
-        let y = 460;
-        let dialogText = this.scene.add.text(35, y, text[page], {
+        let dialogText = this.scene.add.text(300, 480, text[page], {
+            fontFamily: "Courier",
             backgroundColor: "#FFF",
             fontSize: "16px",
             fill: "#000",
             wordWrap: {
-                width: 260
+                width: 400
             },
             padding: {
-                left: 5,
-                right: 5,
-                top: 10,
-                bottom: 10
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 15
             },
-            fixedWidth: 270,
+            fixedWidth: 400,
             maxLines: 5,
             lineSpacing: 2
         });
@@ -41,8 +39,7 @@ export default class Dialog
         this.text = dialogText;
     }
 
-    destroy()
-    {
+    destroy() {
         if (this.text) {
             this.text.destroy();
         }
