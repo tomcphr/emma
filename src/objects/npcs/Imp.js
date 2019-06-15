@@ -5,6 +5,12 @@ export default class Imp extends Npc {
 
         this.scene = scene;
 
+        scene.anims.create({
+            key: "imp-horizontal",
+            frames: scene.anims.generateFrameNumbers("imp", { start: 8, end: 15 }),
+            frameRate: 12,
+            repeat: -1
+        });
         this.anims.load("imp-horizontal");
 
         this.body.setSize(15, 15);

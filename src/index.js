@@ -7,7 +7,7 @@ window.onload = new Phaser.Game({
         default: "arcade",
         arcade: {
             gravity: {y: 0},
-            debug: false
+            debug: true
         }
     },
     scale: {
@@ -18,5 +18,6 @@ window.onload = new Phaser.Game({
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     pixelArt: true,
-    scene: [GameScene, UiScene],
+    disableContextMenu: true,
+    scene: [GameScene, UiScene]
 });

@@ -17,7 +17,7 @@ export default class Dialog
             return;
         }
 
-        let dialogText = this.scene.add.text(300, 480, text[page], {
+        let dialogText = this.scene.add.text(25, 490, text[page], {
             fontFamily: "Courier",
             backgroundColor: "#FFF",
             fontSize: "16px",

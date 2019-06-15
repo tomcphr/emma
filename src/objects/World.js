@@ -14,8 +14,8 @@ export default class World
             height: 25,
             doorPadding: 2,
             rooms: {
-                width: {min: 7, max: 13, onlyOdd: true},
-                height: {min: 7, max: 13, onlyOdd: true}
+                width: {min: 7, max: 8, onlyOdd: true},
+                height: {min: 6, max: 8, onlyOdd: true}
             }
         });
 
@@ -77,12 +77,14 @@ export default class World
         });
 
         // Loop around the remaining rooms and randomize
+        let depth = this.scene.getDepth();
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
         otherRooms.forEach(data => {
             var rand = Math.random();
 
             // 25% of 1 imp
-            if (rand <= 0.25) {
+            let chance = (10 + depth) / 100;
+            if (rand <= chance) {
                 var worldX = this.map.tileToWorldX(data.centerX);
                 var worldY = this.map.tileToWorldY(data.centerY);
 

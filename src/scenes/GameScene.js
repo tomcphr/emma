@@ -22,19 +22,6 @@ export default class GameScene extends Phaser.Scene
     };
 
     create() {
-        this.anims.create({
-            key: "player-horizontal",
-            frames: this.anims.generateFrameNumbers("characters", { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "imp-horizontal",
-            frames: this.anims.generateFrameNumbers("imp", { start: 8, end: 15 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
         this.keys = this.input.keyboard.createCursorKeys();
 
         this.world = new World(this);
@@ -51,7 +38,7 @@ export default class GameScene extends Phaser.Scene
         const camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
-        camera.setZoom(3);
+        camera.setZoom(2);
 
         // Keyboard events
         let events = {
@@ -73,5 +60,9 @@ export default class GameScene extends Phaser.Scene
 
     getDialog() {
         return this.scene.get("UiScene").getDialog();
-    }
+    };
+
+    getDepth() {
+        return this.scene.get("UiScene").depth;
+    };
 }
