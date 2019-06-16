@@ -3,7 +3,6 @@ export default class UiScene extends Phaser.Scene
 {
     constructor() {
         super({key: "UiScene", active: true});
-
         this.depth = 0;
     };
 
@@ -29,12 +28,16 @@ export default class UiScene extends Phaser.Scene
 
         this.dialog = new Dialog(this);
 
-        this.invButton = this.add.sprite(760, 560, "buttons", 0)
-            .setInteractive()
+        let inventory = this.add.sprite(760, 560, "buttons", 0)
+            .setInteractive({useHandCursor: true})
             .setScrollFactor(0);
-        this.invButton.on("pointerup", () => {
+        inventory.on("pointerup", () => {
             alert("OOOOO");
-        })
+        });
+    };
+
+    getDepth() {
+        return this.depth;
     };
 
     getDialog() {
