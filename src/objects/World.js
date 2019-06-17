@@ -45,11 +45,19 @@ export default class World
 
         // Decide what's in each room.
         let rooms = this.dungeon.rooms.slice();
+
+        // Remove the first room.
         let startRoom = rooms.shift();
 
         // Remove the endroom from the array and populate the exit.
-        let endRoom = this.getRoomInstance(Phaser.Utils.Array.RemoveRandomElement(rooms));
-        endRoom.exit(() =>  {
+        let randomRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
+        let exitTile = this.getRoomInstance(randomRoom).placeAndGetExitTile();
+        exitTile.setCollisionCallback(() =>  {
+            let intersects = exitTile.intersects(this.scene.player.x, this.scene.player.y);
+            if (!intersects) {
+                return false;
+            }
+
             this.scene.events.emit("downWeGo");
 
             // Hold the player in place.
@@ -74,6 +82,8 @@ export default class World
                 // Restart the scene.
                 this.scene.scene.restart();
             });
+
+            return true;
         });
 
         // Loop around the remaining rooms and randomize

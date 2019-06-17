@@ -66,14 +66,8 @@ export default class Room
         }
     };
 
-    exit(callback)
+    placeAndGetExitTile()
     {
-        this.layer.putTileAt(0, this.data.centerX, this.data.centerY);
-
-        // Reset the tile callback
-        this.layer.setTileIndexCallback(0, null);
-
-        // Set the tile callback
-        this.layer.setTileIndexCallback(0, callback);
+        return this.layer.putTileAt(0, this.data.centerX, this.data.centerY);
     };
 };
