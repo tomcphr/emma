@@ -17,7 +17,6 @@ window.onload = new Phaser.Game({
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    pixelArt: true,
     disableContextMenu: true,
     scene: [GameScene, UiScene]
 });

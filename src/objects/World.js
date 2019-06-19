@@ -28,6 +28,9 @@ export default class World
 
         this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32, 1, 2);
 
+        // Render the tileset as pixel art.
+        this.tileset.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
+
         this.npcs = scene.add.group();
     };
 
