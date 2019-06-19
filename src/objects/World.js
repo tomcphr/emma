@@ -52,10 +52,10 @@ export default class World
         // Remove the endroom from the array and populate the exit.
         let randomRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
         let exitTile = this.getRoomInstance(randomRoom).placeAndGetExitTile();
-        exitTile.setCollisionCallback(() =>  {
-            let intersects = exitTile.intersects(this.scene.player.x, this.scene.player.y);
-            if (!intersects) {
-                return false;
+        exitTile.setCollisionCallback((sprite, tile) =>  {
+            // Only allow the player to trigger the reset.
+            if (sprite !== this.scene.player) {
+                return;
             }
 
             this.scene.events.emit("downWeGo");
