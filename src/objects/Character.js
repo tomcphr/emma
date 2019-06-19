@@ -10,6 +10,9 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.body.setImmovable(1);
 
         this.speed = 150;
+
+        // Render the characters as Pixel Art
+        this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     };
 
     getSpeed() {

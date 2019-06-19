@@ -9,6 +9,12 @@ export default class Player extends Character {
 
         this.keys = scene.keys;
 
+        scene.anims.create({
+            key: "player-horizontal",
+            frames: scene.anims.generateFrameNumbers("characters", { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
         this.anims.load("player-horizontal");
 
         this.setScale(0.5);

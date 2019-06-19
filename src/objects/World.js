@@ -14,8 +14,8 @@ export default class World
             height: 25,
             doorPadding: 2,
             rooms: {
-                width: {min: 7, max: 13, onlyOdd: true},
-                height: {min: 7, max: 13, onlyOdd: true}
+                width: {min: 7, max: 8, onlyOdd: true},
+                height: {min: 6, max: 8, onlyOdd: true}
             }
         });
 
@@ -26,7 +26,10 @@ export default class World
             height: this.dungeon.height
         });
 
-        this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32);
+        this.tileset = this.map.addTilesetImage("dungeon", null, 32, 32, 1, 2);
+
+        // Render the tileset as pixel art.
+        this.tileset.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.npcs = scene.add.group();
     };
@@ -45,11 +48,19 @@ export default class World
 
         // Decide what's in each room.
         let rooms = this.dungeon.rooms.slice();
+
+        // Remove the first room.
         let startRoom = rooms.shift();
 
         // Remove the endroom from the array and populate the exit.
-        let endRoom = this.getRoomInstance(Phaser.Utils.Array.RemoveRandomElement(rooms));
-        endRoom.exit(() =>  {
+        let randomRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
+        let exitTile = this.getRoomInstance(randomRoom).placeAndGetExitTile();
+        exitTile.setCollisionCallback((sprite, tile) =>  {
+            // Only allow the player to trigger the reset.
+            if (sprite !== this.scene.player) {
+                return;
+            }
+
             this.scene.events.emit("downWeGo");
 
             // Hold the player in place.
@@ -74,15 +85,19 @@ export default class World
                 // Restart the scene.
                 this.scene.scene.restart();
             });
+
+            return true;
         });
 
         // Loop around the remaining rooms and randomize
+        let depth = this.scene.getDepth();
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
         otherRooms.forEach(data => {
             var rand = Math.random();
 
             // 25% of 1 imp
-            if (rand <= 0.25) {
+            let chance = (10 + depth) / 100;
+            if (rand <= chance) {
                 var worldX = this.map.tileToWorldX(data.centerX);
                 var worldY = this.map.tileToWorldY(data.centerY);
 

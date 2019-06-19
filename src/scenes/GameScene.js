@@ -9,46 +9,34 @@ export default class GameScene extends Phaser.Scene
     };
 
     preload() {
-        let assets = "../../assets";
-        this.load.image("dungeon", assets + "/tilesets/dungeon.png");
-        this.load.spritesheet("characters", assets + "/spritesheets/characters.png", {
+        let spritesheets = "../../assets/spritesheets";
+        let tilesets = "../../assets/tilesets";
+        this.load.image("dungeon", tilesets + "/dungeon.png");
+        this.load.spritesheet("characters", spritesheets + "/characters.png", {
             frameWidth: 64,
             frameHeight: 64
         });
-        this.load.spritesheet("imp", assets + "/spritesheets/imp.png", {
+        this.load.spritesheet("imp", spritesheets + "/imp.png", {
             frameWidth: 32,
             frameHeight: 32
         });
     };
 
     create() {
-        this.anims.create({
-            key: "player-horizontal",
-            frames: this.anims.generateFrameNumbers("characters", { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "imp-horizontal",
-            frames: this.anims.generateFrameNumbers("imp", { start: 8, end: 15 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
         this.keys = this.input.keyboard.createCursorKeys();
 
         this.world = new World(this);
         this.world.generate();
         this.world.getFirstRoom().setAlpha(1);
 
-        let spawnX = this.world.getFirstRoom().getSpawnX();
-        let spawnY = this.world.getFirstRoom().getSpawnY();
+        let spawnX = this.world.getFirstRoom().getSpawnX() + 16;
+        let spawnY = this.world.getFirstRoom().getSpawnY() + 16;
 
         this.wanderer = new Wanderer(this, spawnX, spawnY);
 
         this.player = new Player(this, spawnX, spawnY + 32);
 
-        const camera = this.cameras.main;
+        let camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0, 0, this.world.getTileMap().widthInPixels, this.world.getTileMap().heightInPixels);
         camera.setZoom(2);
@@ -57,10 +45,7 @@ export default class GameScene extends Phaser.Scene
         let events = {
             "keydown-SPACE" : () => {
                 this.world.npcs.getChildren().forEach((npc) => {
-                    let distance = npc.getDistance();
-                    if (distance < 40) {
-                        npc.interact();
-                    }
+                    npc.interact();
                 }, this);
             },
         };
@@ -72,5 +57,13 @@ export default class GameScene extends Phaser.Scene
     update() {
         this.player.update();
         this.world.update();
+    };
+
+    getDialog() {
+        return this.scene.get("UiScene").getDialog();
+    };
+
+    getDepth() {
+        return this.scene.get("UiScene").getDepth();
     };
 }
