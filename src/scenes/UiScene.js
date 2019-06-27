@@ -1,4 +1,5 @@
 import Dialog from "../objects/Dialog";
+import Inventory from "../objects/Inventory";
 import Loader from "../objects/Loader";
 export default class UiScene extends Phaser.Scene
 {
@@ -29,12 +30,15 @@ export default class UiScene extends Phaser.Scene
 
         this.dialog = new Dialog(this);
 
-        let inventory = this.add.sprite(760, 560, "buttons", 0)
+        this.inventory = new Inventory(this);
+
+        let inventoryButton = this.add.sprite(760, 560, "buttons", 0)
             .setInteractive({useHandCursor: true})
             .setScrollFactor(0);
-        inventory.on("pointerup", () => {
-            alert("OOOOO");
-        });
+        inventoryButton.on("pointerup", () => {
+            let items = this.inventory.getItems();
+            
+        }, this);
     };
 
     getDepth() {
@@ -43,5 +47,9 @@ export default class UiScene extends Phaser.Scene
 
     getDialog() {
         return this.dialog;
+    };
+
+    getInventory() {
+        return this.inventory;
     };
 }

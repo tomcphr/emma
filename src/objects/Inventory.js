@@ -3,6 +3,10 @@ export default class Inventory {
         this.data = {};
     };
 
+    getItems() {
+        return this.data;
+    };
+
     addItem(item, quantity) {
         if (item in this.data) {
             quantity = this.data[item] + quantity;
