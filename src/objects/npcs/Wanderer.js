@@ -15,21 +15,16 @@ export default class Wanderer extends Npc {
         this.body.setOffset(18, 11);
 
         this.talking = false;
+
+        this.setText();
     };
 
     getQuests() {
         return this.quests;
     };
 
-    interact() {
-        if (this.getDistance() > 40) {
-            return;
-        }
-
-        this.talking = true;
-
+    setText() {
         var quests = this.getQuests();
-
         let questsText = [
             "Traveller,",
             "I have these quests:"
@@ -37,14 +32,40 @@ export default class Wanderer extends Npc {
         for (var id in quests) {
             questsText.push("- " + quests[id].getTitle());
         }
+        this.text = [
+            questsText,
+            [
+                "Test page 2",
+                "yeah",
+            ],
+        ];
+    };
 
-        this.scene.getDialog().show([questsText]);
+    interact() {
+        if (this.getDistance() > (this.height / 2)) {
+            this.setText();
+            return;
+        }
+
+        // If we have ran out of text, then destroy the dialog but reset the text.
+        if (!this.text.length) {
+            this.scene.getDialog().destroy();
+            this.setText();
+            return;
+        }
+
+        this.talking = true;
+
+        this.scene.getDialog().show(this.text[0]);
+
+        this.text.shift();
     };
 
     update() {
         if (this.getDistance() > (this.height / 2)) {
             if (this.talking) {
                 this.scene.getDialog().destroy();
+                this.setText();
                 this.talking = false;
             }
         }
