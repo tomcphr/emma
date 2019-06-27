@@ -1,7 +1,8 @@
 export default class Room
 {
-    constructor(map, layer, data)
+    constructor(scene, map, layer, data)
     {
+        this.scene = scene;
         this.map = map;
         this.layer = layer;
         this.data = data;

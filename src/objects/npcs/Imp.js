@@ -13,8 +13,10 @@ export default class Imp extends Npc {
         });
         this.anims.load("imp-horizontal");
 
-        this.body.setSize(15, 15);
-        this.body.setOffset(7, 16);
+        this.body.setSize(16, 16);
+        this.body.setOffset(8, 16);
+
+        this.graphics = scene.add.graphics();
     };
 
     interact () {
@@ -25,10 +27,12 @@ export default class Imp extends Npc {
         if (this.body) {
             // If the player is nearby then move towards them.
             let distance = this.getDistance();
-            if (distance < 100 && distance > 30) {
+            if (distance < 100 && distance > 10) {
+                if (!this.walking) {
+                    this.path = this.scene.world.findPath(this, this.scene.player);
+                }
                 this.move();
             } else {
-                // Otherwise; we want to patrol.
                 this.freeze();
             }
         }
@@ -38,10 +42,60 @@ export default class Imp extends Npc {
         if (!this.body) {
             return;
         }
+        let speed = 1;
+        this.walking = false;
+        if (this.path.length) {
+            this.body.moves = true;
+            this.anims.play("imp-horizontal", true);
 
-        this.body.moves = true;
-        this.anims.play("imp-horizontal", true);
-        this.scene.physics.moveToObject(this, this.scene.player);
+            let target = this.path[0];
+
+            let targetX = target.x + 16;
+            let targetY = target.y + 16;
+
+            if (targetY < this.y) {
+                // up
+                if ((this.y - speed) < targetY) {
+                    this.y = targetY;
+                } else {
+                    this.y += -speed;
+                }
+            } else if (targetY > this.y) {
+                // down
+                if ((this.y + speed) > targetY) {
+                    this.y = targetY;
+                } else {
+                    this.y += speed;
+                }
+            } else if (targetX > this.x) {
+                // right
+                if ((this.x + speed) > targetX) {
+                    this.x = targetX;
+                } else {
+                    this.x += speed;
+                }
+            } else if (targetX < this.x) {
+                // left
+                if ((this.x - speed) < targetX) {
+                    this.x = targetX;
+                } else {
+                    this.x += -speed;
+                }
+            }
+            let areWeThereYet = (this.x == targetX && this.y == targetY);
+            if (!areWeThereYet) {
+                this.walking = true;
+            }
+
+            if (areWeThereYet) {
+                this.graphics.clear();
+            }
+            for (var step in this.path) {
+                let pathStep = this.path[step];
+                var rect = new Phaser.Geom.Rectangle(pathStep.x, pathStep.y, 32, 32);
+                this.graphics.strokeRectShape(rect);
+            }
+        }
 
         this.setFlipX(false);
         // If we are to the right of the player then flip

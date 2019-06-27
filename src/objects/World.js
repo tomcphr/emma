@@ -1,7 +1,8 @@
 import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
 import Shadows from "./Shadows";
-import Imp from "../objects/npcs/Imp";
+import Imp from "./npcs/Imp";
+import Pathfinding from "./Pathfinding";
 
 export default class World
 {
@@ -18,6 +19,7 @@ export default class World
                 height: {min: 6, max: 8, onlyOdd: true}
             }
         });
+        this.tiles = this.dungeon.getMappedTiles({empty: 1, floor: 0, door: 0, wall: 1});
 
         this.map = scene.make.tilemap({
             tileWidth: 32,
@@ -93,15 +95,13 @@ export default class World
         let depth = this.scene.getDepth();
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
         otherRooms.forEach(data => {
-            var rand = Math.random();
+            var random = Math.random()
 
-            // 25% of 1 imp
             let chance = (10 + depth) / 100;
-            if (rand <= chance) {
+            if (random <= chance) {
                 var worldX = this.map.tileToWorldX(data.centerX);
                 var worldY = this.map.tileToWorldY(data.centerY);
-
-                (new Imp(this.scene, worldX, worldY));
+                new Imp(this.scene, worldX, worldY);
             }
         });
 
@@ -128,9 +128,15 @@ export default class World
         });
     };
 
+    findPath(fromSprite, toSprite)
+    {
+        let pathfinding = new Pathfinding(this.scene, this.tiles, this.map);
+        return pathfinding.findPath(fromSprite.x, fromSprite.y, toSprite.x, toSprite.y);
+    }
+
     getRoomInstance(data)
     {
-        return new Room(this.getTileMap(), this.getBoundariesLayer(), data);
+        return new Room(this.scene, this.getTileMap(), this.getBoundariesLayer(), data);
     };
 
     getFirstRoom()
@@ -160,5 +166,5 @@ export default class World
     getShadows()
     {
         return this.shadows;
-    }
+    };
 }
