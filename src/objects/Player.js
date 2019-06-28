@@ -33,10 +33,10 @@ export default class Player extends Character {
         // Stop any previous movement from the last frame
         this.body.setVelocity(0);
 
-        let leftPressed = this.keys.left.isDown;
-        let rightPressed = this.keys.right.isDown;
-        let upPressed = this.keys.up.isDown;
-        let downPressed = this.keys.down.isDown;
+        let leftPressed = this.keys.left.isDown || this.keys.A.isDown;
+        let rightPressed = this.keys.right.isDown || this.keys.D.isDown;
+        let upPressed = this.keys.up.isDown || this.keys.W.isDown;
+        let downPressed = this.keys.down.isDown || this.keys.S.isDown;
 
         // Horizontal movement
         if (leftPressed) {

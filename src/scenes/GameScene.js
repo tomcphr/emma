@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene
     };
 
     create() {
-        this.keys = this.input.keyboard.createCursorKeys();
+        this.keys = this.input.keyboard.addKeys("W,S,A,D,up,down,left,right,space");
 
         this.world = new World(this);
         this.world.generate();
