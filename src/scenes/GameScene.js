@@ -26,10 +26,11 @@ export default class GameScene extends Phaser.Scene
 
         this.world = new World(this);
         this.world.generate();
-        this.world.getFirstRoom().setAlpha(1);
 
-        let spawnX = this.world.getFirstRoom().getSpawnX() + 16;
-        let spawnY = this.world.getFirstRoom().getSpawnY() + 16;
+        let firstRoom = this.world.getFirstRoom();
+        firstRoom.setAlpha(1);
+        let spawnX = firstRoom.getSpawnX() + 16;
+        let spawnY = firstRoom.getSpawnY() + 16;
 
         this.wanderer = new Wanderer(this, spawnX, spawnY);
 

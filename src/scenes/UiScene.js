@@ -37,7 +37,7 @@ export default class UiScene extends Phaser.Scene
             .setScrollFactor(0);
         inventoryButton.on("pointerup", () => {
             let items = this.inventory.getItems();
-            
+            console.table(items);
         }, this);
     };
 
