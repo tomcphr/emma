@@ -14,7 +14,6 @@ export default class Imp extends Npc {
         this.anims.load("imp-horizontal");
 
         this.body.setSize(16, 16);
-        this.body.setOffset(8, 16);
 
         this.graphics = scene.add.graphics();
     };
@@ -32,7 +31,9 @@ export default class Imp extends Npc {
                     this.path = this.scene.world.findPath(this, this.scene.player);
                 }
                 this.move();
-            } else {
+            }
+
+            if (!this.walking) {
                 this.freeze();
             }
         }
@@ -44,6 +45,7 @@ export default class Imp extends Npc {
         }
         let speed = 1;
         this.walking = false;
+        console.log(this.path.length);
         if (this.path.length) {
             this.body.moves = true;
             this.anims.play("imp-horizontal", true);
@@ -86,16 +88,7 @@ export default class Imp extends Npc {
             if (!areWeThereYet) {
                 this.walking = true;
             }
-
-            if (areWeThereYet) {
-                this.graphics.clear();
-            }
-            for (var step in this.path) {
-                let pathStep = this.path[step];
-                var rect = new Phaser.Geom.Rectangle(pathStep.x, pathStep.y, 32, 32);
-                this.graphics.strokeRectShape(rect);
-            }
-        }
+        } 
 
         this.setFlipX(false);
         // If we are to the right of the player then flip

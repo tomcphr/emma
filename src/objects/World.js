@@ -97,7 +97,13 @@ export default class World
         otherRooms.forEach(data => {
             var random = Math.random()
 
-            let chance = (10 + depth) / 100;
+            let chance = (10 + (depth * 2)) / 100;
+
+            // Cap out the chance of spawning
+            if (chance > 35) {
+                chance = 35;
+            }
+
             if (random <= chance) {
                 var worldX = this.map.tileToWorldX(data.centerX);
                 var worldY = this.map.tileToWorldY(data.centerY);
