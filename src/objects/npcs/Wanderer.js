@@ -35,8 +35,8 @@ export default class Wanderer extends Npc {
         this.text = [
             questsText,
             [
-                "Test page 2",
-                "yeah",
+                "I have nothing left to say",
+                "Why are you still here?"
             ],
         ];
     };

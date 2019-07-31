@@ -18,19 +18,17 @@ export default class Imp extends Npc {
         this.graphics = scene.add.graphics();
     };
 
-    interact () {
-        // do some attacking code here
-    };
-
     update () {
         if (this.body) {
             // If the player is nearby then move towards them.
             let distance = this.getDistance();
-            if (distance < 100 && distance > 10) {
+            if (distance < 125 && distance > 10) {
                 if (!this.walking) {
                     this.path = this.scene.world.findPath(this, this.scene.player);
                 }
                 this.move();
+            } else {
+                this.walking = false;
             }
 
             if (!this.walking) {
@@ -45,7 +43,6 @@ export default class Imp extends Npc {
         }
         let speed = 1;
         this.walking = false;
-        console.log(this.path.length);
         if (this.path.length) {
             this.body.moves = true;
             this.anims.play("imp-horizontal", true);
