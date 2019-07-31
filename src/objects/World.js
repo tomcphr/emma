@@ -86,6 +86,9 @@ export default class World
                 // Remove all Npcs
                 this.npcs.clear(true, true);
 
+                // Remove all drops
+                this.drops.clear(true, true);
+
                 // Restart the scene.
                 this.scene.scene.restart();
             });
@@ -176,8 +179,8 @@ export default class World
         return this.shadows;
     };
 
-    addDrop(itemId, quantity, x, y) {
-        let drop = new Drop(this.scene, itemId, quantity, x, y);
+    addDrop(item, x, y) {
+        let drop = new Drop(this.scene, item, x, y);
         this.drops.add(drop);
     };
 }

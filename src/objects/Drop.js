@@ -1,12 +1,11 @@
 export default class Drop extends Phaser.GameObjects.Sprite {
-    constructor(scene, item, quantity, x, y) {
-        super(scene, x, y, "items", item);
+    constructor(scene, item, x, y) {
+        super(scene, x, y, "items", item.getId());
         scene.physics.world.enable(this);
         scene.add.existing(this);
 
         this.scene = scene;
         this.item = item;
-        this.quantity = quantity;
 
         this.setScale(0.5);
 
@@ -16,10 +15,10 @@ export default class Drop extends Phaser.GameObjects.Sprite {
     };
 
     getItemId() {
-        return this.item;
+        return this.item.getId();
     };
 
     getQuantity() {
-        return this.quantity;
+        return this.item.getQuantity();
     };
 }

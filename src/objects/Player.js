@@ -20,6 +20,7 @@ export default class Player extends Character {
         this.setScale(0.5);
 
         scene.physics.add.collider(this, scene.world.drops, (player, drop) => {
+            console.info("Picked up " + drop.getQuantity() + " of item (" + drop.getItemId() + ")");
             scene.getInventory().addItem(drop);
             drop.destroy();
         });
