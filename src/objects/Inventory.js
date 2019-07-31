@@ -7,7 +7,9 @@ export default class Inventory {
         return this.data;
     };
 
-    addItem(item, quantity) {
+    addItem(drop) {
+        let item = drop.getItemId();
+        let quantity = drop.getQuantity();
         if (item in this.data) {
             quantity = this.data[item] + quantity;
         }

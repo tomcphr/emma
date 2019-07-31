@@ -18,6 +18,11 @@ export default class Player extends Character {
         this.anims.load("player-horizontal");
 
         this.setScale(0.5);
+
+        scene.physics.add.collider(this, scene.world.drops, (player, drop) => {
+            scene.getInventory().addItem(drop);
+            drop.destroy();
+        });
     };
 
     update() {

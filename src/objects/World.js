@@ -2,6 +2,7 @@ import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
 import Shadows from "./Shadows";
 import Imp from "./npcs/Imp";
+import Drop from "../objects/Drop";
 import Pathfinding from "./Pathfinding";
 
 export default class World
@@ -34,6 +35,7 @@ export default class World
         this.tileset.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.npcs = scene.add.group();
+        this.drops = scene.add.group();
     };
 
     generate()
@@ -172,5 +174,10 @@ export default class World
     getShadows()
     {
         return this.shadows;
+    };
+
+    addDrop(itemId, quantity, x, y) {
+        let drop = new Drop(this.scene, itemId, quantity, x, y);
+        this.drops.add(drop);
     };
 }

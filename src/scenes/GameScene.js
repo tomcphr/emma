@@ -19,6 +19,10 @@ export default class GameScene extends Phaser.Scene
             frameWidth: 32,
             frameHeight: 32
         });
+        this.load.spritesheet("items", spritesheets + "/items.png", {
+            frameWidth: 32,
+            frameHeight: 32
+        });
     };
 
     create() {
@@ -61,6 +65,10 @@ export default class GameScene extends Phaser.Scene
 
     getDialog() {
         return this.scene.get("UiScene").getDialog();
+    };
+
+    getInventory() {
+        return this.scene.get("UiScene").getInventory();
     };
 
     getDepth() {
