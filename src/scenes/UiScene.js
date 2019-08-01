@@ -13,6 +13,7 @@ export default class UiScene extends Phaser.Scene
             frameWidth: 40,
             frameHeight: 40
         });
+        this.load.image("element-frame", (new Loader).getPath("tilesets", "element-frame.png");
     };
 
     create() {
@@ -32,22 +33,32 @@ export default class UiScene extends Phaser.Scene
 
         this.inventory = new Inventory(this);
 
+        this.toolbar = this.add.group();
+
         let inventoryButton = this.add.sprite(760, 560, "buttons", 0)
             .setInteractive({useHandCursor: true})
             .setScrollFactor(0);
-        inventoryButton.on("pointerup", () => {
-            let display = [];
+        inventoryButton.on("pointerover", () => {
+            let y = 510;
+
             let items = this.inventory.getItems();
+
             for (var id in items) {
                 let item = items[id];
-                display.push({
-                    "id" : item.getId(),
-                    "description" : item.getDescription(),
-                    "quantity" : item.getQuantity(),
-                });
+
+                let elementFrame = this.add.image(760, y, "element-frame");
+                let elementItem = this.add.sprite(760, y, "items", item.getId());
+                elementItem.setScale(0.9);
+
+                this.toolbar.add(elementFrame);
+                this.toolbar.add(elementItem);
+
+                y-=50;
             }
-            console.table(display);
         }, this);
+        inventoryButton.on("pointerout", () => {
+            this.toolbar.clear(true, true);
+        });
     };
 
     getDepth() {

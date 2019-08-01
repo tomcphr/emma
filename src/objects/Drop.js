@@ -1,3 +1,4 @@
+import Item from "./Item";
 export default class Drop extends Phaser.GameObjects.Sprite {
     constructor(scene, item, x, y) {
         super(scene, x, y, "items", item.getId());
@@ -20,5 +21,9 @@ export default class Drop extends Phaser.GameObjects.Sprite {
 
     getQuantity() {
         return this.item.getQuantity();
+    };
+
+    getItem() {
+        return this.item;
     };
 }

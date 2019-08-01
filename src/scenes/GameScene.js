@@ -3,6 +3,7 @@ import World from "../objects/World";
 import Wanderer from "../objects/npcs/Wanderer";
 import Loader from "../objects/Loader";
 import Loot from "../objects/Loot";
+import Item from "../objects/Item";
 
 export default class GameScene extends Phaser.Scene
 {
@@ -57,9 +58,18 @@ export default class GameScene extends Phaser.Scene
         for (var type in events) {
             this.input.keyboard.on(type, events[type]);
         }
+
+        this.itemAdded = false;
     };
 
     update() {
+        if (!this.itemAdded) {
+            let item = new Item(this, 0, 100);
+            this.getInventory().addItem(item);
+            item = new Item(this, 1, 100);
+            this.getInventory().addItem(item);
+            this.itemAdded = true;
+        }
         this.player.update();
         this.world.update();
     };

@@ -15,14 +15,14 @@ export default class Inventory {
         return items;
     };
 
-    addItem(drop) {
-        let item = drop.getItemId();
-        let quantity = drop.getQuantity();
-        if (item in this.data) {
-            quantity = this.data[item] + quantity;
+    addItem(item) {
+        let id = item.getId();
+        let quantity = item.getQuantity();
+        if (id in this.data) {
+            quantity = this.data[id] + quantity;
         }
 
-        this.data[item] = quantity;
+        this.data[id] = quantity;
 
         return true;
     };
