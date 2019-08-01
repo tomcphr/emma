@@ -15,3 +15,4 @@ A simple randomly generated dungeon crawler
 * Skill tree
 * Game notifications (such as 'You have just picked up 5 coins' etc)
 * Visual, interactive inventory system
+* Better enemy pathfinding (smaller nodes, less tile to tile)
