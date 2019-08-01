@@ -1,10 +1,18 @@
+import Item from "./Item";
+
 export default class Inventory {
     constructor(scene) {
+        this.scene = scene;
         this.data = {};
     };
 
     getItems() {
-        return this.data;
+        let items = {};
+        for (var item in this.data) {
+            let quantity = this.data[item];
+            items[item] = new Item(this.scene, item, quantity);
+        }
+        return items;
     };
 
     addItem(drop) {

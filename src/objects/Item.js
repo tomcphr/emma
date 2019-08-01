@@ -3,6 +3,12 @@ export default class Item {
         this.scene = scene;
         this.item = item;
         this.quantity = quantity;
+
+        this.descriptions = {
+            0: "Coins",
+            1: "Blade of Eben",
+            2: "Staff of Eternal",
+        };
     };
 
     getId() {
@@ -11,5 +17,9 @@ export default class Item {
 
     getQuantity() {
         return this.quantity;
+    };
+
+    getDescription() {
+        return this.descriptions[this.getId()];
     };
 }

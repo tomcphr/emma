@@ -36,8 +36,17 @@ export default class UiScene extends Phaser.Scene
             .setInteractive({useHandCursor: true})
             .setScrollFactor(0);
         inventoryButton.on("pointerup", () => {
+            let display = [];
             let items = this.inventory.getItems();
-            console.table(items);
+            for (var id in items) {
+                let item = items[id];
+                display.push({
+                    "id" : item.getId(),
+                    "description" : item.getDescription(),
+                    "quantity" : item.getQuantity(),
+                });
+            }
+            console.table(display);
         }, this);
     };
 
