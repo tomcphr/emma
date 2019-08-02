@@ -1,14 +1,11 @@
 import Npc from "../Npc";
-import DeathsAssistant from "./quests/DeathsAssistant";
 export default class Wanderer extends Npc {
     constructor(scene, x, y) {
         super(scene, x, y, "wanderer");
 
         this.scene = scene;
 
-        this.quests = [
-            new DeathsAssistant(this.scene),
-        ];
+        this.quests = [];
 
         this.setScale(0.5);
         this.body.setSize(30, 30);
@@ -25,7 +22,7 @@ export default class Wanderer extends Npc {
 
     setText() {
         var quests = this.getQuests();
-        
+
         let questsText = [
             "Traveller,",
         ];

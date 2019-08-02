@@ -3,8 +3,6 @@ import Room from "./Room";
 import Shadows from "./Shadows";
 import Imp from "./npcs/Imp";
 import Drop from "../objects/Drop";
-import Pathfinding from "./Pathfinding";
-
 export default class World
 {
     constructor(scene)
@@ -36,17 +34,19 @@ export default class World
 
         this.npcs = scene.add.group();
         this.drops = scene.add.group();
+
+        this.boundaries = this.map.createBlankDynamicLayer("boundaries", this.tileset);
+
+        this.walkable = this.map.createBlankDynamicLayer("walkable", this.tileset);
     };
 
     generate()
     {
-        this.boundaries = this.map.createBlankDynamicLayer("boundaries", this.tileset);
-
         // Fill the world with the blank tile.
-        this.getBoundariesLayer().fill(9);
+        this.boundaries.fill(9);
 
         // Create all of the rooms
-        this.getDungeon().rooms.forEach(data => {
+        this.dungeon.rooms.forEach(data => {
             this.getRoomInstance(data).generate();
         });
 
@@ -80,17 +80,7 @@ export default class World
 
             // When the camera has faded, restart the scene.
             camera.once("camerafadeoutcomplete", () =>  {
-                // Remove the player object
-                this.scene.player.destroy();
-
-                // Remove all Npcs
-                this.npcs.clear(true, true);
-
-                // Remove all drops
-                this.drops.clear(true, true);
-
-                // Restart the scene.
-                this.scene.scene.restart();
+                this.restart();
             });
 
             return true;
@@ -116,7 +106,7 @@ export default class World
             }
         });
 
-        this.getBoundariesLayer().setCollisionByExclusion([1, 2, 4, 5, 6, 8]);
+        this.boundaries.setCollisionBetween(0, 999);
 
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
@@ -125,40 +115,34 @@ export default class World
     update ()
     {
         // Get the current position of the player in the scene.
-        var playerTileX = this.getBoundariesLayer().worldToTileX(this.scene.player.x);
-        var playerTileY = this.getBoundariesLayer().worldToTileY(this.scene.player.y);
+        var playerTileX = this.walkable.worldToTileX(this.scene.player.x);
+        var playerTileY = this.walkable.worldToTileY(this.scene.player.y);
 
         // Find the room the player is currently in.
-        var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);
+        var playerRoom = this.dungeon.getRoomAt(playerTileX, playerTileY);
+        if (!playerRoom) {
+            alert("I think something has gone wrong here...");
+            this.restart();
+            return;
+        }
 
         // Set the current room as being active.
-        this.getShadows().setActiveRoom(playerRoom);
+        this.shadows.setActiveRoom(playerRoom);
 
         this.npcs.getChildren().forEach((npc) => {
             npc.update();
         });
     };
 
-    findPath(fromSprite, toSprite)
-    {
-        let pathfinding = new Pathfinding(this.scene, this.tiles, this.map);
-        return pathfinding.findPath(fromSprite.x, fromSprite.y, toSprite.x, toSprite.y);
-    }
-
     getRoomInstance(data)
     {
-        return new Room(this.scene, this.getTileMap(), this.getBoundariesLayer(), data);
+        return new Room(this.scene, this.getTileMap(), this.boundaries, this.walkable, data);
     };
 
     getFirstRoom()
     {
-        let first = this.getDungeon().rooms[0];
+        let first = this.dungeon.rooms[0];
         return this.getRoomInstance(first);
-    };
-
-    getDungeon()
-    {
-        return this.dungeon;
     };
 
     getTileMap()
@@ -166,21 +150,22 @@ export default class World
         return this.map;
     };
 
-    getBoundariesLayer()
-    {
-        if (!this.boundaries) {
-            this.generate();
-        }
-        return this.boundaries;
-    };
-
-    getShadows()
-    {
-        return this.shadows;
-    };
-
     addDrop(item, x, y) {
         let drop = new Drop(this.scene, item, x, y);
         this.drops.add(drop);
+    };
+
+    restart() {
+        // Remove the player object
+        this.scene.player.destroy();
+
+        // Remove all Npcs
+        this.npcs.clear(true, true);
+
+        // Remove all drops
+        this.drops.clear(true, true);
+
+        // Restart the scene.
+        this.scene.scene.restart();
     };
 }

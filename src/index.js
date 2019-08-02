@@ -18,5 +18,10 @@ window.onload = new Phaser.Game({
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     disableContextMenu: true,
-    scene: [GameScene, UiScene]
+    scene: [GameScene, UiScene],
+    plugins: {
+        scene: [
+            {key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true}
+        ]
+    }
 });
