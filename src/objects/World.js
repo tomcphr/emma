@@ -106,10 +106,12 @@ export default class World
             }
         });
 
-        this.boundaries.setCollisionBetween(0, 999);
+        this.boundaries.setCollision([3, 7, 9, 10, 11]);
 
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
+
+        console.log(this.boundaries);
     };
 
     update ()
