@@ -3,6 +3,8 @@ import Room from "./Room";
 import Shadows from "./Shadows";
 import Imp from "./npcs/Imp";
 import Drop from "../objects/Drop";
+import PhaserNavMesh from "navmesh";
+
 export default class World
 {
     constructor(scene)
@@ -45,10 +47,18 @@ export default class World
         // Fill the world with the blank tile.
         this.boundaries.fill(9);
 
+        let navMesh = [];
+
         // Create all of the rooms
         this.dungeon.rooms.forEach(data => {
-            this.getRoomInstance(data).generate();
+            let room = this.getRoomInstance(data);
+            navMesh.push(room.generate());
+
+            //let mesh = new PhaserNavMesh(this.scene.navMeshPlugin, "mesh", room.generate());
+            //this.scene.navMeshPlugin.PhaserNavMesh["mesh"] = mesh;
         });
+        //this.scene.navMeshPlugin.phaserNavMeshes["mesh"] = new NavMesh(navMesh);
+        console.log(this.scene.navMeshPlugin);
 
         // Decide what's in each room.
         let rooms = this.dungeon.rooms.slice();
@@ -106,12 +116,10 @@ export default class World
             }
         });
 
-        this.boundaries.setCollision([3, 7, 9, 10, 11]);
+        this.boundaries.setCollision([3, 7, 10, 11]);
 
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
-
-        console.log(this.boundaries);
     };
 
     update ()
@@ -122,6 +130,8 @@ export default class World
 
         // Find the room the player is currently in.
         var playerRoom = this.dungeon.getRoomAt(playerTileX, playerTileY);
+
+        // If we can't find the player's room, then freak out.
         if (!playerRoom) {
             alert("I think something has gone wrong here...");
             this.restart();
