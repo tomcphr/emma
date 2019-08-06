@@ -37,15 +37,13 @@ export default class World
         this.npcs = scene.add.group();
         this.drops = scene.add.group();
 
-        this.boundaries = this.map.createBlankDynamicLayer("boundaries", this.tileset);
-
-        this.walkable = this.map.createBlankDynamicLayer("walkable", this.tileset);
+        this.tileLayer = this.map.createBlankDynamicLayer("tileLayer", this.tileset);
     };
 
     generate()
     {
         // Fill the world with the blank tile.
-        this.boundaries.fill(9);
+        this.tileLayer.fill(9);
 
         let navMesh = [];
 
@@ -116,7 +114,7 @@ export default class World
             }
         });
 
-        this.boundaries.setCollision([3, 7, 10, 11]);
+        this.tileLayer.setCollision([3, 7, 10, 11]);
 
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
@@ -125,8 +123,8 @@ export default class World
     update ()
     {
         // Get the current position of the player in the scene.
-        var playerTileX = this.walkable.worldToTileX(this.scene.player.x);
-        var playerTileY = this.walkable.worldToTileY(this.scene.player.y);
+        var playerTileX = this.tileLayer.worldToTileX(this.scene.player.x);
+        var playerTileY = this.tileLayer.worldToTileY(this.scene.player.y);
 
         // Find the room the player is currently in.
         var playerRoom = this.dungeon.getRoomAt(playerTileX, playerTileY);
@@ -148,7 +146,7 @@ export default class World
 
     getRoomInstance(data)
     {
-        return new Room(this.scene, this.getTileMap(), this.boundaries, this.walkable, data);
+        return new Room(this.scene, this.getTileMap(), this.tileLayer, data);
     };
 
     getFirstRoom()
