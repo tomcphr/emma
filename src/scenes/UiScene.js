@@ -13,7 +13,7 @@ export default class UiScene extends Phaser.Scene
             frameWidth: 40,
             frameHeight: 40
         });
-        this.load.image("element-frame", (new Loader).getPath("tilesets", "element-frame.png");
+        this.load.image("element-frame", (new Loader).getPath("tilesets", "element-frame.png"));
     };
 
     create() {
