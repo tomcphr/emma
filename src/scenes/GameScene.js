@@ -1,6 +1,7 @@
 import Player from "../objects/Player";
 import World from "../objects/World";
 import Wanderer from "../objects/npcs/Wanderer";
+import Loader from "../objects/Loader";
 
 export default class GameScene extends Phaser.Scene
 {
@@ -9,14 +10,12 @@ export default class GameScene extends Phaser.Scene
     };
 
     preload() {
-        let spritesheets = "../../assets/spritesheets";
-        let tilesets = "../../assets/tilesets";
-        this.load.image("dungeon", tilesets + "/dungeon.png");
-        this.load.spritesheet("characters", spritesheets + "/characters.png", {
+        this.load.image("dungeon", (new Loader).getPath("tilesets", "dungeon.png"));
+        this.load.spritesheet("characters", (new Loader).getPath("spritesheets", "characters.png"), {
             frameWidth: 64,
             frameHeight: 64
         });
-        this.load.spritesheet("imp", spritesheets + "/imp.png", {
+        this.load.spritesheet("imp", (new Loader).getPath("spritesheets", "imp.png"), {
             frameWidth: 32,
             frameHeight: 32
         });

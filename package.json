@@ -2,9 +2,9 @@
   "name": "emma",
   "version": "1.0.0",
   "description": "A rouge like RPG",
-  "main": "index.js",
   "scripts": {
-    "compile": "./node_modules/.bin/webpack --config webpack.config.js"
+    "compile": "./node_modules/.bin/webpack --config webpack.config.js",
+    "binary": "./node_modules/.bin/webpack --config webpack.config.js && electron electron.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "phaser": "^3.17.0"
   },
   "devDependencies": {
+    "electron": "^6.0.1",
     "webpack": "^4.29.6",
     "webpack-command": "^0.4.1"
   }

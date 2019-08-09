@@ -1,4 +1,5 @@
 import Dialog from "../objects/Dialog";
+import Loader from "../objects/Loader";
 export default class UiScene extends Phaser.Scene
 {
     constructor() {
@@ -7,7 +8,7 @@ export default class UiScene extends Phaser.Scene
     };
 
     preload() {
-        this.load.spritesheet("buttons", "../../assets/tilesets/buttons.png", {
+        this.load.spritesheet("buttons", (new Loader).getPath("tilesets", "buttons.png"), {
             frameWidth: 40,
             frameHeight: 40
         });
