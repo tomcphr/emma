@@ -32,18 +32,6 @@ export default class Room
 
         // Create the room.
         this.placeRoom(x, y, width, height, left, right, top, bottom);
-
-        let tiles = this.map.getTilesWithin(x + 1, y + 1, width - 2, height - 2);
-        
-        let mesh = [];
-        tiles.forEach((tile) => {
-            mesh.push({
-                x: this.map.tileToWorldX(tile.x), 
-                y: this.map.tileToWorldY(tile.y)
-            });
-        });
-
-        return mesh;
     };
 
     placeRoom(x, y, width, height, left, right, top, bottom)
