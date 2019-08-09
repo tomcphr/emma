@@ -5,7 +5,7 @@ A simple randomly generated dungeon crawler
 * Download nodejs and npm
 * Install a web server to host the game (I use npm's http-server for development)
 * Install of the dependencies via npm (`npm install`)
-* Compile the game (`npm run compile`)
+* Compile the game (`npm run compile`) or create a binary version with (`npm run binary`)
 
 # to do for first release
 * Combat (and equipment)
