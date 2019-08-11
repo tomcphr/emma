@@ -27,7 +27,6 @@ export default class Npc extends Character {
     };
 
     freeze() {
-        this.path = [];
         this.walking = false;
         super.freeze();
     };

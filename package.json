@@ -21,9 +21,7 @@
   "homepage": "https://github.com/tomcphr/emma#readme",
   "dependencies": {
     "@mikewesthad/dungeon": "^1.2.2",
-    "npm": "^6.9.0",
-    "phaser": "^3.17.0",
-    "phaser-navmesh": "^2.0.4"
+    "phaser": "^3.17.0"
   },
   "devDependencies": {
     "electron": "^6.0.1",

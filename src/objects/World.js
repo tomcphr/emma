@@ -3,7 +3,6 @@ import Room from "./Room";
 import Shadows from "./Shadows";
 import Imp from "./npcs/Imp";
 import Drop from "../objects/Drop";
-import NavMesh from "navmesh";
 
 export default class World
 {
@@ -108,29 +107,9 @@ export default class World
 
         this.tileLayer.setCollision([3, 7, 9, 10, 11]);
 
-        let tiles = this.map.getTilesWithin(0, 0, this.tileLayer.width, this.tileLayer.height);
-        
-        let indexes = {};
-        let mesh = [];
-        tiles.forEach((tile) => {
-            if (tile.collides === true) {
-                return;
-            };
-            if (!indexes[tile.index]) {
-                indexes[tile.index] = 0;
-            }
-            indexes[tile.index] += 1;
-            mesh.push({
-                x: this.map.tileToWorldX(tile.x), 
-                y: this.map.tileToWorldY(tile.y)
-            });
-        });
-        this.navMesh = new NavMesh([mesh]);
-        console.log(indexes);
+
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
-
-        this.debugGraphics = this.scene.add.graphics();
     };
 
     update ()
@@ -154,83 +133,7 @@ export default class World
         this.npcs.getChildren().forEach((npc) => {
             npc.update();
         });
-
-        let wanderTile = this.getTileXY(this.scene.wanderer.x, this.scene.wanderer.y);
-
-        let wanderWorldXY = this.getWorldFromTileXY(wanderTile.x, wanderTile.y);
-        let playerWorldXY = this.getWorldFromTileXY(playerTile.x, playerTile.y);
-        let path = this.navMesh.findPath(wanderWorldXY, playerWorldXY);
-        this.debugGraphics.clear();
-        this.debugDrawPath(path);
-        this.debugDrawMesh();
     };
-
-    debugDrawPath(path, color = 0x00ff00, thickness = 10, alpha = 1) {
-        if (!this.debugGraphics) return;
-
-        if (path && path.length) {
-            // Draw line for path
-            this.debugGraphics.lineStyle(thickness, color, alpha);
-            this.debugGraphics.strokePoints(path);
-
-            // Draw circle at start and end of path
-            this.debugGraphics.fillStyle(color, alpha);
-            const d = 1.2 * thickness;
-            this.debugGraphics.fillCircle(path[0].x, path[0].y, d, d);
-
-            if (path.length > 1) {
-                const lastPoint = path[path.length - 1];
-                this.debugGraphics.fillCircle(lastPoint.x, lastPoint.y, d, d);
-            }
-        }
-    }
-
-    debugDrawMesh({
-    drawCentroid = true,
-    drawBounds = false,
-    drawNeighbors = true,
-    drawPortals = true,
-    palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]
-  } = {}) {
-    if (!this.debugGraphics) return;
-
-    const navPolys = this.navMesh.getPolygons();
-
-    navPolys.forEach(poly => {
-      const color = palette[poly.id % palette.length];
-      this.debugGraphics.fillStyle(color);
-      this.debugGraphics.fillPoints(poly.getPoints(), true);
-
-      if (drawCentroid) {
-        this.debugGraphics.fillStyle(0x000000);
-        this.debugGraphics.fillCircle(poly.centroid.x, poly.centroid.y, 4);
-      }
-
-      if (drawBounds) {
-        this.debugGraphics.lineStyle(1, 0xffffff);
-        this.debugGraphics.strokeCircle(poly.centroid.x, poly.centroid.y, poly.boundingRadius);
-      }
-
-      if (drawNeighbors) {
-        this.debugGraphics.lineStyle(2, 0x000000);
-        poly.neighbors.forEach(n => {
-          this.debugGraphics.lineBetween(
-            poly.centroid.x,
-            poly.centroid.y,
-            n.centroid.x,
-            n.centroid.y
-          );
-        });
-      }
-
-      if (drawPortals) {
-        this.debugGraphics.lineStyle(10, 0x000000);
-        poly.portals.forEach(portal =>
-          this.debugGraphics.lineBetween(portal.start.x, portal.start.y, portal.end.x, portal.end.y)
-        );
-      }
-    });
-  }
 
     getTileXY(x, y)
     {
