@@ -12,24 +12,57 @@ export default class Npc extends Character {
 
         this.dropTable = dropTable;
 
+        this.currentTarget = null;
+
         this.freeze();
     };
+
+    goTo (targetPoint) {
+        if (!this.scene) {
+            return;
+        }
+
+        // Find a path to the target
+        this.path = this.scene.world.navMesh.findPath(this.position, targetPoint);
+
+        // If there is a valid path, grab the first point from the path and set it as the target
+        if (this.path && this.path.length > 0) {
+            this.currentTarget = this.path.shift(); 
+        }   else {
+            this.currentTarget = null;
+        }
+    }
 
     interact() {
     };
 
     update() {
+        super.update();
+
+        super.freeze();
+
+        // If we currently have a valid target location
+        if (this.currentTarget) {
+            // Move towards the target
+
+
+            // Check if we have reached the current target (within a fudge factor)
+            var d = Phaser.Math.Distance.Between(this.position.x, this.position.y, this.currentTarget.x, this.currentTarget.y);
+            console.log(this.position, this.currentTarget);
+            if (d < 5) {
+                // If there is path left, grab the next point. Otherwise, null the target.
+                if (this.path && this.path.length > 0) {
+                    this.currentTarget = this.path.shift(); 
+                }   else {
+                    this.currentTarget = null;
+                }
+            }
+        }
     };
 
     getDistance() {
         let distance = Phaser.Math.Distance.Between(this.scene.player.x, this.scene.player.y, this.x, this.y);
         return distance.toFixed(2);
-    };
-
-    freeze() {
-        this.path = [];
-        this.walking = false;
-        super.freeze();
     };
 
     destroy() {

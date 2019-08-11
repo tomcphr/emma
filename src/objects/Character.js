@@ -13,10 +13,16 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
         // Render the characters as Pixel Art
         this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+
+        this.position = new Phaser.Geom.Point(this.x, this.y);
     };
 
     getSpeed() {
         return this.speed;
+    };
+
+    update () {
+        this.position.setTo(this.x, this.y);
     };
 
     freeze() {

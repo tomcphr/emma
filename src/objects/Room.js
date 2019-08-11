@@ -40,8 +40,9 @@ export default class Room
         // occasionally place a dirty tile (10% of the time).
         this.tileLayer.weightedRandomize(x + 1, y + 1, width - 2, height - 2, [
             { index: 1, weight: 7 }, // 9/10 times, use index 1
-            { index: [2, 4, 5], weight: 2 }, // 1/10 times, randomly pick 1
+            { index: [2, 4, 5], weight: 1 }, // 1/10 times, randomly pick 1
             { index: [6, 8], weight: 1 },
+            {index: 9, weight: 1},
         ]);
 
         // Place the room corners tiles

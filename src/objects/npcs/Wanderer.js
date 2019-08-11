@@ -65,6 +65,8 @@ export default class Wanderer extends Npc {
     };
 
     update() {
+        super.update();
+        
         let outOfRange = this.getDistance() > (this.height / 2);
         if (outOfRange) {
             if (this.talking) {

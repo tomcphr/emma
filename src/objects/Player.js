@@ -27,6 +27,8 @@ export default class Player extends Character {
     };
 
     update() {
+        super.update();
+        
         // If we have a body, allow movement
         if (this.body) {
             this.move()
