@@ -6,18 +6,10 @@ export default class Dialog
         this.text = null;
     }
 
-    show(text, page = 0) {
+    show(text) {
         this.destroy();
-        for (let i in this.dialog) {
-            let sprite = this.dialog[i];
-            sprite.setAlpha(1);
-        }
 
-        if ((page + 1) > text.length) {
-            return;
-        }
-
-        let dialogText = this.scene.add.text(25, 490, text[page], {
+        let dialogText = this.scene.add.text(25, 490, text, {
             fontFamily: "Courier",
             backgroundColor: "#FFF",
             fontSize: "16px",

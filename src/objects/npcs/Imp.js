@@ -1,7 +1,11 @@
 import Npc from "../Npc";
 export default class Imp extends Npc {
     constructor(scene, x, y) {
-        super(scene, x, y, "imp");
+        super(scene, x, y, "imp", [
+            {id: 0, chance: 100, min: 15, max: 200},
+            {id: 1, chance: 50, min: 1, max: 1},
+            {id: 2, chance: 0.1, min: 1, max: 1},
+        ]);
 
         this.scene = scene;
 
@@ -13,40 +17,15 @@ export default class Imp extends Npc {
         });
         this.anims.load("imp-horizontal");
 
-        this.body.setSize(15, 15);
-        this.body.setOffset(7, 16);
+        this.body.setSize(16, 16);
+
+        this.graphics = scene.add.graphics();
     };
 
     interact () {
-        // do some attacking code here
+        this.destroy();
     };
 
     update () {
-        if (this.body) {
-            // If the player is nearby then move towards them.
-            let distance = this.getDistance();
-            if (distance < 100 && distance > 30) {
-                this.move();
-            } else {
-                // Otherwise; we want to patrol.
-                this.freeze();
-            }
-        }
     };
-
-    move () {
-        if (!this.body) {
-            return;
-        }
-
-        this.body.moves = true;
-        this.anims.play("imp-horizontal", true);
-        this.scene.physics.moveToObject(this, this.scene.player);
-
-        this.setFlipX(false);
-        // If we are to the right of the player then flip
-        if (this.x > this.scene.player.x) {
-            this.setFlipX(true);
-        }
-    }
 }

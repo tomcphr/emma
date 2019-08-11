@@ -1,4 +1,5 @@
 import Dialog from "../objects/Dialog";
+import Inventory from "../objects/Inventory";
 import Loader from "../objects/Loader";
 export default class UiScene extends Phaser.Scene
 {
@@ -12,6 +13,7 @@ export default class UiScene extends Phaser.Scene
             frameWidth: 40,
             frameHeight: 40
         });
+        this.load.image("element-frame", (new Loader).getPath("tilesets", "element-frame.png"));
     };
 
     create() {
@@ -29,11 +31,33 @@ export default class UiScene extends Phaser.Scene
 
         this.dialog = new Dialog(this);
 
-        let inventory = this.add.sprite(760, 560, "buttons", 0)
+        this.inventory = new Inventory(this);
+
+        this.toolbar = this.add.group();
+
+        let inventoryButton = this.add.sprite(760, 560, "buttons", 0)
             .setInteractive({useHandCursor: true})
             .setScrollFactor(0);
-        inventory.on("pointerup", () => {
-            alert("OOOOO");
+        inventoryButton.on("pointerover", () => {
+            let y = 510;
+
+            let items = this.inventory.getItems();
+
+            for (var id in items) {
+                let item = items[id];
+
+                let elementFrame = this.add.image(760, y, "element-frame");
+                let elementItem = this.add.sprite(760, y, "items", item.getId());
+                elementItem.setScale(0.9);
+
+                this.toolbar.add(elementFrame);
+                this.toolbar.add(elementItem);
+
+                y-=50;
+            }
+        }, this);
+        inventoryButton.on("pointerout", () => {
+            this.toolbar.clear(true, true);
         });
     };
 
@@ -43,5 +67,9 @@ export default class UiScene extends Phaser.Scene
 
     getDialog() {
         return this.dialog;
+    };
+
+    getInventory() {
+        return this.inventory;
     };
 }

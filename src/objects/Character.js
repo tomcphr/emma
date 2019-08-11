@@ -4,7 +4,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         scene.physics.world.enable(this);
         scene.add.existing(this);
 
-        scene.physics.add.collider(this, scene.world.boundaries);
+        scene.physics.add.collider(this, scene.world.tileLayer);
         scene.physics.add.collider(this, scene.world.npcs);
 
         this.body.setImmovable(1);

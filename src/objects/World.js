@@ -1,7 +1,8 @@
 import Dungeon from "@mikewesthad/dungeon";
 import Room from "./Room";
 import Shadows from "./Shadows";
-import Imp from "../objects/npcs/Imp";
+import Imp from "./npcs/Imp";
+import Drop from "../objects/Drop";
 
 export default class World
 {
@@ -12,12 +13,12 @@ export default class World
         this.dungeon = new Dungeon({
             width: 25,
             height: 25,
-            doorPadding: 2,
             rooms: {
                 width: {min: 7, max: 8, onlyOdd: true},
                 height: {min: 6, max: 8, onlyOdd: true}
             }
         });
+        this.tiles = this.dungeon.getMappedTiles({empty: 1, floor: 0, door: 0, wall: 1});
 
         this.map = scene.make.tilemap({
             tileWidth: 32,
@@ -32,18 +33,20 @@ export default class World
         this.tileset.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.npcs = scene.add.group();
+        this.drops = scene.add.group();
+
+        this.tileLayer = this.map.createBlankDynamicLayer("tileLayer", this.tileset);
     };
 
     generate()
     {
-        this.boundaries = this.map.createBlankDynamicLayer("boundaries", this.tileset);
-
         // Fill the world with the blank tile.
-        this.getBoundariesLayer().fill(9);
+        this.tileLayer.fill(9);
 
         // Create all of the rooms
-        this.getDungeon().rooms.forEach(data => {
-            this.getRoomInstance(data).generate();
+        this.dungeon.rooms.forEach(data => {
+            let room = this.getRoomInstance(data);
+            room.generate();
         });
 
         // Decide what's in each room.
@@ -76,14 +79,7 @@ export default class World
 
             // When the camera has faded, restart the scene.
             camera.once("camerafadeoutcomplete", () =>  {
-                // Remove the player object
-                this.scene.player.destroy();
-
-                // Remove all Npcs
-                this.npcs.clear(true, true);
-
-                // Restart the scene.
-                this.scene.scene.restart();
+                this.restart();
             });
 
             return true;
@@ -93,19 +89,24 @@ export default class World
         let depth = this.scene.getDepth();
         let otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
         otherRooms.forEach(data => {
-            var rand = Math.random();
+            var random = Math.random()
 
-            // 25% of 1 imp
-            let chance = (10 + depth) / 100;
-            if (rand <= chance) {
+            let chance = (10 + (depth * 2)) / 100;
+
+            // Cap out the chance of spawning
+            if (chance > 35) {
+                chance = 35;
+            }
+
+            if (random <= chance) {
                 var worldX = this.map.tileToWorldX(data.centerX);
                 var worldY = this.map.tileToWorldY(data.centerY);
-
-                (new Imp(this.scene, worldX, worldY));
+                new Imp(this.scene, worldX, worldY);
             }
         });
 
-        this.getBoundariesLayer().setCollisionByExclusion([1, 2, 4, 5, 6, 8]);
+        this.tileLayer.setCollision([3, 7, 9, 10, 11]);
+
 
         this.shadows = new Shadows(this, this.tileset);
         this.shadows.cloak(true);
@@ -114,34 +115,49 @@ export default class World
     update ()
     {
         // Get the current position of the player in the scene.
-        var playerTileX = this.getBoundariesLayer().worldToTileX(this.scene.player.x);
-        var playerTileY = this.getBoundariesLayer().worldToTileY(this.scene.player.y);
+        let playerTile = this.getTileXY(this.scene.player.x, this.scene.player.y);
 
         // Find the room the player is currently in.
-        var playerRoom = this.getDungeon().getRoomAt(playerTileX, playerTileY);
+        var playerRoom = this.dungeon.getRoomAt(playerTile.x, playerTile.y);
+
+        // If we can't find the player's room, then freak out.
+        if (!playerRoom) {
+            alert("I think something has gone wrong here...");
+            this.restart();
+            return;
+        }
 
         // Set the current room as being active.
-        this.getShadows().setActiveRoom(playerRoom);
+        this.shadows.setActiveRoom(playerRoom);
 
         this.npcs.getChildren().forEach((npc) => {
             npc.update();
         });
     };
 
+    getTileXY(x, y)
+    {
+        let tileX = this.tileLayer.worldToTileX(x);
+        let tileY = this.tileLayer.worldToTileY(y);
+        return {x: tileX, y: tileY};
+    };
+
+    getWorldFromTileXY(x, y)
+    {
+        let worldX = this.tileLayer.tileToWorldX(x);
+        let worldY = this.tileLayer.tileToWorldY(y);
+        return {x: worldX, y: worldY};
+    };
+
     getRoomInstance(data)
     {
-        return new Room(this.getTileMap(), this.getBoundariesLayer(), data);
+        return new Room(this.scene, this.getTileMap(), this.tileLayer, data);
     };
 
     getFirstRoom()
     {
-        let first = this.getDungeon().rooms[0];
+        let first = this.dungeon.rooms[0];
         return this.getRoomInstance(first);
-    };
-
-    getDungeon()
-    {
-        return this.dungeon;
     };
 
     getTileMap()
@@ -149,16 +165,22 @@ export default class World
         return this.map;
     };
 
-    getBoundariesLayer()
-    {
-        if (!this.boundaries) {
-            this.generate();
-        }
-        return this.boundaries;
+    addDrop(item, x, y) {
+        let drop = new Drop(this.scene, item, x, y);
+        this.drops.add(drop);
     };
 
-    getShadows()
-    {
-        return this.shadows;
-    }
+    restart() {
+        // Remove the player object
+        this.scene.player.destroy();
+
+        // Remove all Npcs
+        this.npcs.clear(true, true);
+
+        // Remove all drops
+        this.drops.clear(true, true);
+
+        // Restart the scene.
+        this.scene.scene.restart();
+    };
 }

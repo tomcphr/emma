@@ -2,6 +2,8 @@ import Player from "../objects/Player";
 import World from "../objects/World";
 import Wanderer from "../objects/npcs/Wanderer";
 import Loader from "../objects/Loader";
+import Loot from "../objects/Loot";
+import Item from "../objects/Item";
 
 export default class GameScene extends Phaser.Scene
 {
@@ -19,6 +21,10 @@ export default class GameScene extends Phaser.Scene
             frameWidth: 32,
             frameHeight: 32
         });
+        this.load.spritesheet("items", (new Loader).getPath("spritesheets", "items.png"), {
+            frameWidth: 32,
+            frameHeight: 32
+        });
     };
 
     create() {
@@ -26,10 +32,11 @@ export default class GameScene extends Phaser.Scene
 
         this.world = new World(this);
         this.world.generate();
-        this.world.getFirstRoom().setAlpha(1);
 
-        let spawnX = this.world.getFirstRoom().getSpawnX() + 16;
-        let spawnY = this.world.getFirstRoom().getSpawnY() + 16;
+        let firstRoom = this.world.getFirstRoom();
+        firstRoom.setAlpha(1);
+        let spawnX = firstRoom.getSpawnX() + 16;
+        let spawnY = firstRoom.getSpawnY() + 16;
 
         this.wanderer = new Wanderer(this, spawnX, spawnY);
 
@@ -60,6 +67,10 @@ export default class GameScene extends Phaser.Scene
 
     getDialog() {
         return this.scene.get("UiScene").getDialog();
+    };
+
+    getInventory() {
+        return this.scene.get("UiScene").getInventory();
     };
 
     getDepth() {
