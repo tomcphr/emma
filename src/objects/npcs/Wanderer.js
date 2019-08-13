@@ -10,7 +10,11 @@ export default class Wanderer extends Npc {
         this.body.setSize(30, 30);
         this.body.setOffset(18, 11);
 
-        this.speech = new Speech(scene, [
+        this.speech = new Speech(scene, this.getText());
+    };
+
+    getText() {
+        let text = [
             [
                 "Traveller,",
                 "Welcome the Vizore",
@@ -21,7 +25,8 @@ export default class Wanderer extends Npc {
                 "It's your choice",
                 "Why are you still here?"
             ],
-        ]);
+        ];
+        return text;
     };
 
     interact() {

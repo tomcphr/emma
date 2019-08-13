@@ -22,7 +22,7 @@ export default class Imp extends Npc {
         this.graphics = scene.add.graphics();
     };
 
-    interact () {
+    interact () {        
         this.destroy();
     };
 

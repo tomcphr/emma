@@ -13,7 +13,12 @@ export default class Speech {
     	return this.text[this.pointer++];
     };
 
+    setText(text) {
+        this.reset();
+        this.text = text;
+    };
+
     reset() {
     	this.pointer = 0;
-    }
+    };
 }
