@@ -1,7 +1,7 @@
 import Character from "./Character";
 import Loot from "./Loot";
 export default class Npc extends Character {
-    constructor(scene, x, y, id, dropTable) {
+    constructor(scene, x, y, id, drops) {
         super(scene, "characters", x, y);
         scene.world.npcs.add(this);
 
@@ -10,15 +10,9 @@ export default class Npc extends Character {
 
         this.speed = 200;
 
-        this.dropTable = dropTable;
+        this.drops = drops;
 
         this.freeze();
-    };
-
-    interact() {
-    };
-
-    update() {
     };
 
     getDistance() {
@@ -34,8 +28,8 @@ export default class Npc extends Character {
     destroy() {
         // If we are still in the scene, then do any final logic for this npc.
         if (this.scene) {
-            if (this.dropTable) {
-                let loot = new Loot(this.scene, this.dropTable);
+            if (this.drops) {
+                let loot = new Loot(this.scene, this.drops);
                 let drops = loot.getItems(5);
                 for (var drop in drops) {
                     let item = drops[drop];

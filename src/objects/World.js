@@ -142,13 +142,6 @@ export default class World
         return {x: tileX, y: tileY};
     };
 
-    getWorldFromTileXY(x, y)
-    {
-        let worldX = this.tileLayer.tileToWorldX(x);
-        let worldY = this.tileLayer.tileToWorldY(y);
-        return {x: worldX, y: worldY};
-    };
-
     getRoomInstance(data)
     {
         return new Room(this.scene, this.getTileMap(), this.tileLayer, data);
