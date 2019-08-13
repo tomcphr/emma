@@ -25,10 +25,6 @@ export default class Wanderer extends Npc {
     };
 
     interact() {
-        if (this.getDistance() > (this.height / 2)) {
-            return;
-        }
-
         let speech = this.speech.getText();
 
         this.scene.getDialog().destroy();
