@@ -1,10 +1,10 @@
 import Dialog from "../objects/Dialog";
 import Inventory from "../objects/Inventory";
 import Loader from "../objects/Loader";
-export default class UiScene extends Phaser.Scene
+export default class Ui extends Phaser.Scene
 {
     constructor() {
-        super({key: "UiScene", active: true});
+        super({key: "Ui", active: true});
         this.depth = 0;
     };
 
@@ -21,10 +21,10 @@ export default class UiScene extends Phaser.Scene
         depthText.setScrollFactor(0);
 
         //  Grab a reference to the Game Scene
-        let gameScene = this.scene.get("GameScene");
+        let game = this.scene.get("Game");
 
         //  Listen for events from it
-        gameScene.events.on("downWeGo", () => {
+        game.events.on("downWeGo", () => {
             this.depth++;
             depthText.setText("Depth: " + this.depth);
         }, this);

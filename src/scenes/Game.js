@@ -5,10 +5,10 @@ import Loader from "../objects/Loader";
 import Loot from "../objects/Loot";
 import Item from "../objects/Item";
 
-export default class GameScene extends Phaser.Scene
+export default class Game extends Phaser.Scene
 {
     constructor() {
-        super({key: "GameScene", active: true});
+        super({key: "Game", active: true});
     };
 
     preload() {
@@ -68,14 +68,14 @@ export default class GameScene extends Phaser.Scene
     };
 
     getDialog() {
-        return this.scene.get("UiScene").getDialog();
+        return this.scene.get("Ui").getDialog();
     };
 
     getInventory() {
-        return this.scene.get("UiScene").getInventory();
+        return this.scene.get("Ui").getInventory();
     };
 
     getDepth() {
-        return this.scene.get("UiScene").getDepth();
+        return this.scene.get("Ui").getDepth();
     };
 }
