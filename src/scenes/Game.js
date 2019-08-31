@@ -1,10 +1,9 @@
 import Player from "../objects/Player";
 import World from "../objects/World";
 import Wanderer from "../objects/npcs/Wanderer";
-import Loader from "../objects/Loader";
 import Loot from "../objects/Loot";
 import Item from "../objects/Item";
-
+import Loader from "../objects/Loader";
 export default class Game extends Phaser.Scene
 {
     constructor() {
@@ -12,22 +11,21 @@ export default class Game extends Phaser.Scene
     };
 
     preload() {
-        this.load.image("dungeon", (new Loader).getPath("tilesets", "dungeon.png"));
-        this.load.spritesheet("characters", (new Loader).getPath("spritesheets", "characters.png"), {
-            frameWidth: 64,
-            frameHeight: 64
-        });
-        this.load.spritesheet("imp", (new Loader).getPath("spritesheets", "imp.png"), {
-            frameWidth: 32,
-            frameHeight: 32
-        });
-        this.load.spritesheet("items", (new Loader).getPath("spritesheets", "items.png"), {
-            frameWidth: 32,
-            frameHeight: 32
-        });
-    };
+        let loader = new Loader(this);
+        loader.load([
+            {key: "dungeon", folder: "tilesets", filename: "dungeon.png"},
+            {key: "element-frame", folder: "tilesets", filename: "element-frame.png"},
+            {key: "characters", folder: "spritesheets", filename: "characters.png", frameSize: 64},
+            {key: "imp", folder: "spritesheets", filename: "imp.png", frameSize: 32},
+            {key: "items", folder: "spritesheets", filename: "items.png", frameSize: 32},
+            {key: "buttons", folder: "tilesets", filename: "buttons.png", frameSize: 40},
+        ]);
+    }
 
     create() {
+        // Launch the UI scene
+        this.scene.launch("Ui");
+
         this.keys = this.input.keyboard.addKeys("W,S,A,D,up,down,left,right,space");
 
         this.world = new World(this);

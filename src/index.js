@@ -1,3 +1,4 @@
+import Preloader from "./scenes/Preloader";
 import Game from "./scenes/Game";
 import Ui from "./scenes/Ui";
 window.onload = new Phaser.Game({

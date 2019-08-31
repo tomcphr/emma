@@ -4,9 +4,9 @@ const url = require("url");
 
 app.on("ready", () => {
     let win = new BrowserWindow({
-        title: "emma", 
+        title: "emma",
         resizable: false,
-        width: 800, 
+        width: 800,
         height: 600
     });
     win.setMenuBarVisibility(false);

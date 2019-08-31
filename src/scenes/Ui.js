@@ -1,19 +1,10 @@
 import Dialog from "../objects/Dialog";
 import Inventory from "../objects/Inventory";
-import Loader from "../objects/Loader";
 export default class Ui extends Phaser.Scene
 {
     constructor() {
-        super({key: "Ui", active: true});
+        super({key: "Ui", active: false});
         this.depth = 0;
-    };
-
-    preload() {
-        this.load.spritesheet("buttons", (new Loader).getPath("tilesets", "buttons.png"), {
-            frameWidth: 40,
-            frameHeight: 40
-        });
-        this.load.image("element-frame", (new Loader).getPath("tilesets", "element-frame.png"));
     };
 
     create() {

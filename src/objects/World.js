@@ -3,7 +3,6 @@ import Room from "./Room";
 import Shadows from "./Shadows";
 import Imp from "./npcs/Imp";
 import Drop from "../objects/Drop";
-
 export default class World
 {
     constructor(scene)
